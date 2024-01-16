@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Dive into DevOps: Mastering AWS Project Deployment</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap">
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./script.js">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/themes/prism.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/prism.min.js"></script>
+</head>
+
+<body>
+
+    <header>
+        <h1>Deployment Of A Java Application Onto Kubernetes Using Argocd</h1>
+    </header>
+
+    <div class="blog-post">
+        <h1></h1>
+        <p>Welcome to another blog post where we will walk through a real-world example Kubernetes project. The Employee
+            Management System is a lightweight, in-memory web application designed to simplify the handling of employee
+            information. Developed using Spring Boot and Thymeleaf, this application enables users to effortlessly add,
+            view, and delete employee records. The intuitive interface provides a smooth experience for managing your
+            workforce without the need for external databases.</p>
+
+        <div class="section-separator"></div>
+
+        <div class="container">
+            <h2>Technology Stack:</h2>
+            <ul>
+                <li><strong>Backend:</strong> Crafted using Spring Boot, providing a robust and scalable foundation.
+                </li>
+                <li><strong>Frontend:</strong> Utilizes Thymeleaf for server-side rendering, ensuring dynamic and
+                    responsive user interfaces.</li>
+                <li><strong>Storage:</strong> In-memory storage eliminates the need for an external database, making it
+                    a lightweight solution.</li>
+            </ul>
+        </div>
+
+        <div class="section-separator"></div>
+
+        <div class="features-section">
+            <h2>Key Features:</h2>
+            <ul>
+                <li><strong>Add Employee:</strong> Seamlessly input new employee details through a user-friendly form.
+                </li>
+                <li><strong>Employee List:</strong> Access a comprehensive list of all employees, each with a unique
+                    identifier.</li>
+                <li><strong>Delete Employee:</strong> Remove employees from the system with a simple click.</li>
+            </ul>
+        </div>
+
+        <p>In this blog post, we'll explore how to set up an Employee Management System using Spring Boot and then
+            deploy
+            it to Kubernetes using Argo CD for continuous delivery.</p>
+        <div class="section-separator"></div>
+
+        <div class="table-of-contents">
+            <h2>Table of Contents:</h2>
+            <ol style="list-style-type: none; padding: 0; margin: 0;">
+                <li><a href="#Architechture">Architechture</a></li>
+                <li><a href="#step1">Step 1: Setting up AWS Account</a></li>
+                <li><a href="#step2">Step 2: Creating EC2 Instances</a></li>
+                <li><a href="#step3">Step 3: Configuring Security Groups</a></li>
+                <li><a href="#step4">Step 4: SSH To Ec2 Instances And Installation Of Jenkins</a></li>
+                <li><a href="#step5">Step 5: Installation Of Sonarqube On To The Ec2 Instance</a></li>
+                <li><a href="#step6">Step 6: Install Docker On Ec2 Instance</a></li>
+                <li><a href="#step7">Step 7: Installing Argocd On The Minikube Kubernetes Cluster</a></li>
+                <li><a href="#step8">Step 8: Jenkins Pipeline Setup</a></li>
+                <li><a href="#step9">Step 9: Create An Application In Argo Cd Using The Ui</a></li>
+                <li><a href="#step10">Step 9: Clean UP</a></li>
+
+                <!-- Add more steps as needed -->
+            </ol>
+        </div>
+        <h2 id="Architechture">Architechture</h2>
+        <img src="./Assests/images/Architecture.jpg" alt="Step 2 Screenshot">
+        <!-- step 1 -->
+        <h2 id="step1">Step 1: Setting up AWS Account</h2>
+        <p>Before we begin, make sure you have an AWS account. If you don't have one, you can <a
+                href="https://aws.amazon.com/" target="_blank">sign up for an AWS account here</a>.</p>
+        <p>Go the link provided and create an account</p>
+        <img src="./Assests/images/aws-1.png" alt="Step 1 Screenshot">
+        <img src="./Assests/images/aws-2.png" alt="Step 1 Screenshot">
+
+        <!-- Add content for each step -->
+        <!-- step 2 -->
+        <h2 id="step2">Step 2: Creating EC2 Instances</h2>
+        <p>Now, let's create EC2 instances to host our application. Follow these steps:</p>
+        <p><strong>Name the EC2 instance as you wish; in my case, I am naming it "Webserver."</strong></p>
+        <img src="./Assests/images/aws-5.png" alt="Step 2 Screenshot">
+        <p><strong>Select Ubuntu as the operating system and T2.large</strong></p>
+        <img src="./Assests/images/aws-4.png" alt="Step 2 Screenshot">
+        <p><strong>Select a key pair. If you don't have one, create it; it's simple.</strong></p>
+        <img src="./Assests/images/aws-3.png" alt="Step 2 Screenshot">
+        <p><strong>Then launch the EC2 instance.</strong></p>
+        <img src="./Assests/images/aws-6.png" alt="Step 1 Screenshot">
+        <p><strong>Wait until the instance state is "running," and the status shows "2/2 checks passed."</strong></p>
+        <img src="./Assests/images/aws-7.png" alt="Step 1 Screenshot">
+
+        <!-- Add content for Step 3 -->
+
+        <h2 id="step3">Step 3: Configuring Security Groups</h2>
+        <p>Ensure proper security by configuring security groups. Here's how:</p>
+        <p><strong>Go to security group settings and add "All Traffic" from anywhere. To be frank, it's not advisable to
+                keep it like this, but for the sake of this demo, it's okay. We have SonarQube, Jenkins, and other
+                components, so changing this for a specific port every time can be time-consuming. Therefore, I'm
+                allowing all traffic from anywhere.
+            </strong></p>
+        <img src="./Assests/images/aws-8.png" alt="Step 3 Screenshot">
+
+        <!-- Add content for Step 4 -->
+
+        <h2 id="step4">Step 4: SSH to EC2 Instances and installation of Jenkins</h2>
+        <p><strong>Navigate to the PEM file location and execute the following command to SSH into the EC2 instance, as
+                shown in
+                the screenshot below.</strong></p>
+        <pre class="language-powershell">ssh -i file-name.pem ubuntu@ip-address-of-ec2</pre>
+        <img src="./Assests/images/gitbash-1.png" alt="Step 4 Screenshot">
+        <p><strong>If you see this screen, you have successfully SSHed into the EC2 instance.</strong></p>
+        <img src="./Assests/images/gitbash-2.png" alt="Step 4 Screenshot">
+        <p><strong>Now, execute the following command to update and install Java:</strong></p>
+        <pre class="language-powershell">sudo apt update && apt install openjdk-11-jre</pre>
+        <p><strong>Note: Please note the addition of sudo before the second apt command to ensure proper permissions for
+                installation.</strong></p>
+        <img src="./Assests/images/gitbash-3.png" alt="">
+        <p><strong>Wait until the installation is complete. Take your time; there's no need to rush.</strong></p>
+        <img src="./Assests/images/gitbash-4.png" alt="">
+        <p><strong>Verify the Java installation by runqning the following command:</strong></p>
+        <pre class="language-powershell">java -version</pre>
+        <p><strong>This will display information about the installed Java version on your system.</strong></p>
+        <p><strong>Now, it's time to install Jenkins, where the pipeline will be built – the Continuous Integration (CI)
+                part.</strong></p>
+        <pre class="language-powershell">curl -fsSL https://pkg.jenkins.io/debian/jenkins.io-2023.key | sudo tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+            echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+            sudo apt-get update
+            sudo apt-get install jenkins</pre>
+        <img src="./Assests/images/gitbash-5.png" alt="Step 4 Screenshot">
+        <p>Wait until the Jenkins installation has completed.</p>
+        <img src="./Assests/images/gitbash-4.png" alt="Step 4 Screenshot">
+        <p>Now, go and access Jenkins on port 8080. The IP address looks like: http://ip-address-of-ec2:8080</p>
+        <p><strong>Note: In security group of ec2, Make sure you allow all traffic or Jenkins port 8080 from your IP or
+                anywhere; it's mandatory. Otherwise, you will not be able to access Jenkins.</strong></p>
+        <p>Go to the directory `/var/lib/jenkins/secrets/initialAdminPassword` to get the Jenkins password.</p>
+        <img src="./Assests/images/gitbash-6.png" alt="Step 4 Screenshot">
+        <p><strong> Copy it and paste it here, Click on Continue</strong></p>
+        <img src="./Assests/images/jenkins-1.png" alt="Step 4 Screenshot">
+        <p><strong>Select Install Suggested Plugins</strong></p>
+        <img src="./Assests/images/jenkins-2.png" alt="Step 4 Screenshot">
+        <p><strong>Wait until the installation has completed.</strong></p>
+        <img src="./Assests/images/jenkins-3.png" alt="Step 4 Screenshot">
+        <p><strong>Click on Skip and contine as admin user</strong></p>
+        <img src="./Assests/images/jenkins-4.png" alt="Step 4 Screenshot">
+        <p><strong>Click on Save and Finish</strong></p>
+        <img src="./Assests/images/jenkins-5.png" alt="Step 4 Screenshot">
+        <p><strong>Click On start using jenkins</strong></p>
+        <img src="./Assests/images/jenkins-6.png" alt="Step 4 Screenshot">
+        <p><strong>Here We Go! 🎉Congratulations🎉 You Have Successfully Installed Jenkins</strong></p>
+        <img src="./Assests/images/jenkins-7.png" alt="Step 4 Screenshot">
+
+
+
+
+
+        <!-- Add content for Step 5 -->
+
+        <h2 id="step5">Installation Of Sonarqube On To The Ec2 Instance</h2>
+        <p><strong>Switch to the root user</strong></p>
+        <!-- image -->
+        <pre class="language-powershell">sudo su -</pre>
+        <p><strong>Add a user named "sonarqube" and switch to that user</strong></p>
+        <!-- image -->
+        <pre class="language-powershell">adduser sonarqube 
+sudo su - sonarqube</pre>
+        <img src="./Assests/images/sonar-add-user.png" alt="Step 5 Screenshot">
+
+        <img src="./Assests/images/sonar-kube-git-1.png" alt="Step 5 Screenshot">
+
+        <p>Install SonarQube and generate a token</p>
+        <!-- image -->
+        <pre class="language-powershell">apt install unzip
+wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.4.0.54424.zip
+unzip *
+chmod -R 755 /home/sonarqube/sonarqube-9.4.0.54424
+chown -R sonarqube:sonarqube /home/sonarqube/sonarqube-9.4.0.54424
+cd sonarqube-9.4.0.54424/bin/linux-x86-64/
+./sonar.sh start</pre>
+        <img src="./Assests/images/sonar-kube-git-2.png" alt="Step 5 Screenshot">
+
+        <p><strong>Access SonarQube in the browser using the default username and password, which are both
+                "admin."</strong></p>
+        <img src="./Assests/images/sonarkube-dashboard-1.png" alt="Step 5 Screenshot">
+
+        <!-- image -->
+        <pre class="language-powershell">password = admin
+username = admin</pre>
+        <img src="./Assests/images/sonarqube-dashboard-2.png" alt="Step 5 Screenshot">
+
+        <p><strong>Configure jenkins for sonarqube integration</strong></p>
+        <p>Generate a token in SonarQube and then paste this token in the Jenkins credentials.By doing this,
+            communication between SonarQube and Jenkins has been established.</p>
+        <!-- image -->
+        <img src="./Assests/images/sonar-3.png" alt="Step 5 Screenshot">
+
+        <p><strong>Generate a GitHub token and add it to Jenkins to successfully establish communication between
+                them.</strong></p>
+        <!-- image -->
+        <img src="./Assests/images/sonar-4.png" alt="Step 5 Screenshot">
+        <img src="./Assests/images/sonar-5.png" alt="Step 5 Screenshot">
+        <img src="./Assests/images/sonar-6.png" alt="Step 5 Screenshot">
+
+        <h1>Jenkins Credentials Setup</h1>
+
+        <p><strong>To add GitHub, SonarQube, and Docker credentials in Jenkins, follow these steps:</strong></p>
+
+        <ol>
+            <li>Access your Jenkins dashboard.</li>
+            <img src="./Assests/images/jenkins-7.png" alt="Step 5 Screenshot">
+            <li>Click on "Manage Jenkins" in the sidebar.</li>
+            <li>Go to "Manage Credentials."</li>
+            <img src="./Assests/images/jenkins-cred-1.png" alt="Step 5 Screenshot">
+            <li>Under the "Stores scoped to Jenkins" section, click on "Global credentials (unrestricted)." </li>
+            <img src="./Assests/images/jenkins-cred-2.png" alt="Step 5 Screenshot">
+
+            <img src="./Assests/images/jenkins-cred-3.png" alt="Step 5 Screenshot">
+
+            <li>Click "Add Credentials" on the left side of the page.</li>
+
+            <img src="./Assests/images/jenkins-cred-4.png" alt="Step 5 Screenshot">
+
+            <li>For GitHub Credentials:
+                <ul>
+                    <li>Choose "Secret text" as the kind of credentials.</li>
+                    <li>Enter your GitHub personal access token in the provided field.</li>
+                    <li>Provide an optional ID and description for the credentials.</li>
+                    <img src="./Assests/images/jenkins-cred-8.png" alt="Step 5 Screenshot">
+
+                </ul>
+            </li>
+
+            <li>For SonarQube Credentials:
+                <ul>
+                    <li>Choose "Secret text" as the kind of credentials.</li>
+                    <li>Enter your SonarQube token or other required credentials in the provided field.</li>
+                    <li>Provide an optional ID and description for the credentials.</li>
+                    <img src="./Assests/images/jenkins-cred-6.png" alt="Step 5 Screenshot">
+
+                </ul>
+            </li>
+
+            <li>For Docker Hub Credentials:
+                <ul>
+                    <li>Choose "Secret text" as the kind of credentials.</li>
+                    <li>Enter your Docker Hub credentials (username and password or access token) in the provided field.
+                    </li>
+                    <li>Provide an optional ID and description for the credentials.</li>
+                    <img src="./Assests/images/jenkins-cred-7.png" alt="Step 5 Screenshot">
+                </ul>
+            </li>
+
+            <li>Click "OK" to save the credentials.</li>
+        </ol>
+
+        <p> <strong>Note: Ensure that you use the added credentials appropriately in your Jenkins jobs or
+                pipelines.</strong></p>
+        <!-- plugins -->
+        <p><strong>To install the necessary plugins in Jenkins, follow these steps:</strong></p>
+
+        <ol>
+            <li>Access your Jenkins dashboard.</li>
+            <img src="./Assests/images/jenkins-7.png" alt="Step 5 Screenshot">
+            <li>Click on "Manage Jenkins" in the sidebar.</li>
+            <li>Go to "Manage Plugins."</li>
+            <img src="./Assests/images/git-plugin-1.png" alt="Step 5 Screenshot">
+            <li>Switch to the "Available" tab.</li>
+            <img src="./Assests/images/git-plugin-2.png" alt="Step 5 Screenshot">
+            <li>Search for "Docker Pipeline" in the search box.</li>
+            <li>Find the "Docker Pipeline" plugin in the list and check the box next to it.</li>
+            <li>Scroll down and also search for "SonarQube Scanner."</li>
+            <li>Find the "SonarQube Scanner" plugin and check the box next to it.</li>
+            <img src="./Assests/images/git-plugin-3.png" alt="Step 5 Screenshot">
+            <li>Click "Install without restart" at the bottom of the page.</li>
+            <li>Wait for the installation process to complete.</li>
+            <img src="./Assests/images/git-plugin-4.png" alt="Step 5 Screenshot">
+            <li>After installation, restart Jenkins if required.</li>
+            <img src="./Assests/images/jenkins-restart.png" alt="Step 5 Screenshot">
+
+        </ol>
+
+        <p>Note: Ensure that the plugins are successfully installed by checking the "Installed" tab in the "Manage
+            Plugins" section.</p>
+        <!-- Add content for Step 6 -->
+        <h2 id="step6">Install Docker On Ec2 Instance</h2>
+        <p><strong>Install Docker on the EC2 instance</strong></p>
+        <pre class="language-powershell">sudo apt update
+sudo apt install docker.io</pre>
+        <p><strong>Grant Jenkins and Ubuntu users permissions to Docker daemon</strong></p>
+        <pre class="language-powershell">sudo su -
+usermod -aG docker jenkins
+usermod -aG docker ubuntu
+systemctl restart docker</pre>
+
+        <!-- Add content for Step 7 -->
+        <h2 id="step7">Installing Argocd On the minikube Kubernetes cluster</h2>
+        <p><strong> Launch the Minikube cluster in your local system, not in EC2</strong></p>
+        <pre class="language-powershell">For Windows:
+    minikube start --memory=3000 --driver=hyperv
+For macOS:
+    minikube start --memory=3000 --driver=hyperkit</pre>
+        <img src="./Assests/images/minikube-1.png" alt="Step 7 Screenshot">
+        <p><strong>Install Operator Lifecycle Manager (OLM)</strong></p>
+        <pre
+            class="language-powershell">curl -sL https://github.com/operator-framework/operator-lifecycle-manager/releases/download/v0.26.0/install.sh | bash -s v0.26.0</pre>
+        <img src="./Assests/images/argo-cd-1.png" alt="Step 7 Screenshot">
+
+        <p><strong>Install Argo CD Operator</strong></p>
+        <pre class="language-powershell">kubectl create -f https://operatorhub.io/install/argocd-operator.yaml</pre>
+        <img src="./Assests/images/argocd-2.png" alt="Step 7 Screenshot">
+        <p><strong>Create Argo CD cluster manifest (argocd-cluster.yaml)</strong></p>
+        <img src="./Assests/images/argocd-3.png" alt="Step 7 Screenshot">
+        <pre class="language-yaml">
+apiVersion: argoproj.io/v1alpha1
+kind: ArgoCD
+metadata:
+    name: example-argocd
+    labels:
+        example: basic
+spec: {}</pre>
+
+        <p><strong>Apply the manifest</strong></p>
+        <pre class="language-powershell">kubectl apply -f argocd-cluster.yaml</pre>
+
+        <img src="./Assests/images/argocd-5.png" alt="Step 7 Screenshot">
+
+        <p><strong>Get the Argo CD service and change it from ClusterIP to NodePort</strong></p>
+
+        <pre class="language-powershell">kubectl get svc
+kubectl edit svc #argocd-service-name
+#Change type: ClusterIP to type: NodePort </pre>
+        <img src="./Assests/images/argocd-svc.png" alt="Step 7 Screenshot">
+        <img src="./Assests/images/kubectl-edit.png" alt="Step 7 Screenshot">
+        <img src="./Assests/images/Cl-NP.png" alt="Step 7 Screenshot">
+        <img src="./Assests/images/CI-NP-2.png" alt="Step 7 Screenshot">
+
+
+        <p><strong>Access Argo CD web UI using the NodePort and login with admin credentials</strong></p>
+        <img src="./Assests/images/svc list.png" alt="Step 7 Screenshot">
+        <pre class="language-powershell">http://ip-address:NodePort</pre>
+        <img src="./Assests/images/arocd-login.png" alt="Step 7 Screenshot">
+        <p><strong>To get the Argocd Credentials:</strong></p>
+        <pre class="language-powershell">kubectl get secrets
+kubectl edit secret #argocd-secret-name -o=jsonpath='{.data.admin\.password}' | base64 -d</pre>
+        <img src="./Assests/images/argocd-encryption.png" alt="Step 7 Screenshot">
+        <img src="./Assests/images/argocd-secrets.png" alt="Step 7 Screenshot">
+
+
+
+        <!-- Add content for Step 8 -->
+        <h2 id="step8">Jenkins Pipeline Setup</h2>
+
+        <p><strong>Follow these steps to create and build a Jenkins pipeline:</strong></p>
+
+        <ol>
+            <li>Access your Jenkins dashboard.</li>
+            <img src="./Assests/images/jenkins-7.png" alt="Step 8 Screenshot">
+            <li>Click on "New Item" in the sidebar.</li>
+            <img src="./Assests/images/jenkins-7.png" alt="Step 8 Screenshot">
+            <li>Enter a name for your item (pipeline) and select "Pipeline" as the project type.</li>
+            <img src="./Assests/images/jenkins--pipeline-1.png" alt="Step 8 Screenshot">
+            <li>Click "OK" to create the pipeline.</li>
+            <li>Configure SCM (Source Code Management):
+                <ul>
+                    <li>Select "Pipeline script from SCM" in the Definition dropdown.</li>
+                    <img src="./Assests/images/jenkins--pipeline-2.png" alt="Step 8 Screenshot">
+                    <li>Choose the appropriate SCM option (e.g., Git).</li>
+                    <img src="./Assests/images/jenkins--pipeline-3.png" alt="Step 8 Screenshot">
+
+                    <li>Provide the repository URL.</li>
+                    <li>Specify the branch (e.g., master or main).</li>
+                    <img src="./Assests/images/jenkins--pipeline-4.png" alt="Step 8 Screenshot">
+                    <li>Click "Apply" and then "Save" to save the pipeline configuration.</li>
+                    <img src="./Assests/images/jenkins--pipeline-5.png" alt="Step 8 Screenshot">
+
+                </ul>
+            </li>
+
+            <li>Ensure GitHub, SonarQube, and Docker integration:
+                <ul>
+                    <li>Make sure GitHub credentials, SonarQube credentials, and Docker credentials are configured in
+                        Jenkins as mentioned in the previous guide.</li>
+                </ul>
+            </li>
+
+            <li>Trigger the build:
+                <ul>
+                    <li>Manually initiate the build by clicking "Build Now."</li>
+                    <li>Wait for the build to complete.</li>
+                    <img src="./Assests/images/jenkins--pipeline-6.png" alt="Step 8 Screenshot">
+                    <li>If there are issues, troubleshoot and reattempt the build as needed.</li>
+                </ul>
+            <li>Finally, check Docker Hub to see whether the image has been pushed or not.</li>
+            <img src="./Assests/images/docker-hub.png" alt="Step 8 Screenshot">
+
+            </li>
+        </ol>
+        <!-- Add content for Step 9 -->
+        <h2 id="step9">Now it's time to create an application in Argo CD using the UI.</h2>
+        <p><strong>Follow these steps to create an application in Argo CD using the UI:</strong></p>
+
+        <ol>
+            <li>Access the Argo CD web interface.</li>
+            <img src="./Assests/images/argocd-dashboard.png" alt="Step 9 Screenshot">
+            <li>Click on "Create Application" in the UI.</li>
+            <li>Enter the following details:
+                <ul>
+                    <li>Name: <code>employee-management</code></li>
+                    <li>Namespace: <code>default</code></li>
+                    <img src="./Assests/images/argocd-app.png" alt="Step 9 Screenshot">
+                    <li>Repository URL: <code>https://github.com/gadagojushiva/employee-management-system</code></li>
+                    <li>Path: <code>employee-management-manifest</code></li>
+                    <img src="./Assests/images/argocd-app-3.png" alt="Step 9 Screenshot">
+                    <img src="./Assests/images/argocd-app-2.png" alt="Step 9 Screenshot">
+                </ul>
+            </li>
+            <li>Click "Create" to initiate the application creation process.</li>
+            <li>Argo CD will sync with the Git repository and apply the manifests in the specified path.</li>
+            <img src="./Assests/images/argocd-app-4.png">
+            <li>Monitor the application status in the Argo CD UI to ensure successful deployment.</li>
+            <img src="./Assests/images/argocd-app-5.png" alt="Step 9 Screenshot">
+
+        </ol>
+
+        <p>Note: Ensure that the Git repository contains the necessary Kubernetes manifests in the specified path.</p>
+
+        <p><strong>Now check in Minikube</strong></p>
+
+        <pre class="language-powershell">kubectl get pods
+kubectl get svc</pre>
+        <img src="./Assests/images/argocd-app-list.png">
+        <img src="./Assests/images/argocd-svc-list.png">
+
+
+
+        <p><strong>You will see the application pod is up and running.</strong></p>
+
+        <p><strong>Now, to make the application accessible on the browser:</strong></p>
+
+        <p><strong>Create a service for the application:</strong></p>
+
+        <pre class="language-yaml">
+vim employee-management-service.yml</pre>
+
+        <p><strong>Add the following to the YAML file:</strong></p>
+
+        <pre class="language-yaml">apiVersion: v1
+kind: Service
+metadata:
+    name: employee-management-system
+spec:
+    type: NodePort
+    ports:
+      - name: http
+        port: 80
+        targetPort: 8080
+        protocol: TCP
+      selector:
+        app: employee-management-system</pre>
+
+        <p><strong>Apply the service configuration:</strong></p>
+
+        <pre class="language-powershell">kubectl apply -f employee-management-service.yml</pre>
+        <p>Get the services and use the URL provided:</p>
+
+        <pre class="language-powershell">minikube service list</pre>
+        <img src="./Assests/images/argocd-svc-lsit-5.png">
+
+
+        <p><strong>Access the application at the provided URL.</strong></p>
+        <img src="./Assests/images/app-1.png">
+        <img src="./Assests/images/app-2.png">
+        <h1>🎉Congratulations on a Successful Deployment!🎉</h1>
+
+        <p><strong>Congratulations! You've successfully completed the deployment of a Java application onto Kubernetes
+                using
+                ArgoCD. The entire process was streamlined with Jenkins for Continuous Integration (CI).</strong></p>
+
+        <p><strong>This integration of tools and technologies showcases the power of modern DevOps practices, enabling
+                efficient
+                development, testing, and deployment workflows.</strong></p>
+
+        <p><strong>Feel free to explore and customize further, tailoring these practices to fit the specific needs of
+                your
+                projects. Happy coding!</strong></p>
+        <!-- Add content for Step 10 -->
+        <h2 id="step10">Clean UP</h2>
+        <img src="./Assests/images/clean-up.png">
+        <p><strong>Don't forget to delete the EC2 Instance</strong></p>
+
+
+
+        <!-- Tips for Navigation Section -->
+        <div class="section-separator"></div>
+
+        <div class="tips-section">
+            <h2>Tips for Navigation:</h2>
+            <ul>
+                <li>Use the table of contents above to jump to specific sections.</li>
+                <li>Click on the step numbers in the list to navigate directly to the corresponding content.</li>
+                <li>Take advantage of the "Back to Top" button for quick scrolling to the beginning of the page.</li>
+            </ul>
+        </div>
+
+        <div class="section-separator"></div>
+
+        <div class="developer-info">
+            <h2>About the Developer:</h2>
+            <p><span class="developer-name">@Gadagoju Shiva</span> This Employee Management System was skillfully
+                developed, and its efficiency was enhanced through the use of ChatGPT, a powerful language model
+                developed by OpenAI. This collaboration enabled rapid development, contributing to the creation of a
+                seamless and resource-efficient in-memory application.</p>
+        </div>
+
+    </div>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" onclick="scrollToTop()">Back to Top</div>
+    <!-- Footer with LinkedIn badge and copyright notice -->
+    <!-- <footer style="text-align: center;">
+        <p>&copy; 2024 Owner: Gadagoju Shiva. All Rights Reserved.</p>
+    </footer> -->
+</body>
+
+</html>
