@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kubernetes Blog - @Gadagoju Shiva</title>
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="shortcut icon" href="./main-profile.png" type=image/x-icon>
+</head>
+
+<body>
+  <header>
+    <h1>Mastering Kubernetes: A Comprehensive Blog to Container Orchestration and Beyond</h1>
+  </header>
+
+  <section>
+    <h2>Table of Contents</h2>
+    <ul>
+      <li><a href="#what-is-kubernetes">What is Kubernetes?</a></li>
+      <li><a href="#why-kubernetes">Why Kubernetes?</a></li>
+      <li><a href="#differences-docker-kubernetes">Differences between Docker and Kubernetes</a></li>
+      <li><a href="#kubernetes-solves-docker-challenges">How Kubernetes Solves Docker Challenges</a></li>
+      <li><a href="#kubernetes-architecture">Kubernetes Architecture</a></li>
+      <li><a href="#Kubernetes-Architecture-Components">Kubernetes Architecture Components</a></li>
+      <li><a href="#kubernetes-distributions">What is Kubernetes Distributions?</a></li>
+      <li><a href="#difference-kubernetes-eks">Difference Between Kubernetes and EKS</a></li>
+      <li><a href="#what-is-pod-kubernetes">What is Mean By POD in Kubernetes</a></li>
+      <li><a href="#what-is-kubectl">What is Kubectl</a></li>
+      <li><a href="#kubectl-commands">Some of the most used kubectl commands</a></li>
+      <li><a href="#kubernetes-deployment">Kubernetes Deployment</a></li>
+      <li><a href="#why-services-kubernetes">Why Services in Kubernetes?</a></li>
+      <li><a href="#types-of-services">Different Types of Services</a></li>
+      <li><a href="#ingress">Ingress</a></li>
+      <li><a href="#ssl-tls-strategies">SSL/TLS termination strategies</a></li>
+      <li><a href="#kubernetes-rbac">Introduction to Kubernetes RBAC(Role based action control)</a></li>
+      <li><a href="#custom-resource-definition">Custom Resource Definition (CRD)</a></li>
+      <li><a href="#configmaps-secrets">ConfigMaps and Secrets in Kubernetes</a></li>
+      <li><a href="#configmap-secret-differences">Differences between ConfigMap and Secrets</a></li>
+      <li><a href="#kubernetes-monitoring">Kubernetes Monitoring</a></li>
+    </ul>
+
+  </section>
+  <!-- Content goes here, add sections and subsections -->
+  <section>
+    <h2 id="what-is-kubernetes">What is Kubernetes?</h2>
+    <p>Kubernetes is an open-source container orchestration platform that automates the deployment, scaling, and
+      management of containerized applications...</p>
+    <!-- Add more content as needed -->
+  </section>
+  <section>
+    <h2 id="why-kubernetes">Why Kubernetes?</h2>
+    <p>In scenarios where a DevOps engineer individually manages containers, accessibility to applications can become
+      challenging. For instance, if numerous containers are running in production and some go down, manually
+      restarting each container becomes impractical. Kubernetes addresses this challenge by automating the
+      orchestration and management of containers, ensuring high availability, scalability, and efficient deployment of
+      applications at scale.</p>
+    <!-- Add more content as needed -->
+  </section>
+  <section id="differences-docker-kubernetes">
+    <h2>Docker vs Kubernetes</h2>
+    <table>
+      <tr>
+        <th>Docker</th>
+        <th>Kubernetes</th>
+      </tr>
+      <tr>
+        <td>Ephemeral state: Containers are designed for stateless applications with data often lost after stopping.
+        </td>
+        <td>Long-lived: Manages stateful applications, ensuring persistence and handling disruptions.</td>
+      </tr>
+      <tr>
+        <td>No autoscaling: Requires manual scaling based on demand.</td>
+        <td>Autoscaling: Provides automatic horizontal scaling based on metrics like CPU utilization.</td>
+      </tr>
+      <tr>
+        <td>No autohealing: Lacks built-in mechanisms for automatic recovery from failures.</td>
+        <td>Autohealing: Automatically detects and recovers from container or node failures.</td>
+      </tr>
+      <tr>
+        <td>No enterprise support: Limited official enterprise-grade support.</td>
+        <td>Enterprise support: Backed by vendors, offers strong enterprise-grade support with SLAs.</td>
+      </tr>
+    </table>
+    <!-- Add more content as needed -->
+  </section>
+  <section id="kubernetes-solves-docker-challenges">
+    <h1>How Kubernetes Solves Docker Challenges</h1>
+    <p><strong>Solves Ephemeral Nature</strong></p>
+    <p>Kubernetes clusters manage containers across nodes, addressing the ephemeral nature of Docker by redistributing
+      workloads and ensuring high availability.</p>
+    <p><strong>Replica sets enable autoscaling</strong></p>
+    <p>Kubernetes replica sets dynamically scale containerized applications based on demand, automating the process of
+      adjusting the number of replicas for optimal resource utilization.</p>
+    <p><strong>Autohealing with Kubernetes control</strong></p>
+    <p>
+      Kubernetes provides automated recovery mechanisms, detecting and mitigating container or node failures to maintain
+      application stability and reliability.</p>
+  </section>
+  <section id="kubernetes-architecture">
+    <h1>Kubernetes Architecture</h1>
+    <div class="content-image">
+      <img src="./Kubernetes.jpg" alt="Architecture">
+    </div>
+  </section>
+
+  <section id="Kubernetes-Architecture-Components">
+    <h1>Kubernetes Architecture Components</h1>
+    <h3>Master Node (Control Plane) Components:</h3>
+    <ul>
+      <li><strong>API-Server:</strong> Exposes the Kubernetes API and handles requests from users, as well as internal
+        components like the kubelet.</li>
+      <li><strong>ETCD:</strong> Key-value store that stores the configuration data of the Kubernetes cluster, ensuring
+        consistency and providing a reliable source of truth.</li>
+      <li><strong>Scheduler:</strong> Assigns workloads to nodes based on resource availability and constraints,
+        ensuring efficient distribution of tasks.</li>
+      <li><strong>Control Manager:</strong> Manages various controllers that regulate the state of the cluster. Examples
+        include the Node Controller, Replication Controller, and Endpoints Controller.</li>
+      <li><strong>Cloud Controller Manager (CCM):</strong> Integrates with cloud provider APIs to allow Kubernetes to
+        control the underlying cloud infrastructure. This facilitates features like load balancing and storage
+        provision. Each cloud provider may have its own CCM.</li>
+    </ul>
+
+    <h3>Worker Node (Data Plane) Components:</h3>
+    <ul>
+      <li><strong>Kubelet:</strong> Ensures that containers are running in a Pod. It communicates with the API-Server to
+        receive instructions and manages the containers on the node.</li>
+      <li><strong>Kube Proxy:</strong> Maintains network rules on nodes, enabling communication between Pods and
+        external traffic. It helps with service discovery and load balancing.</li>
+      <li><strong>Container Runtime:</strong> Responsible for running containers. Kubernetes supports multiple container
+        runtimes, such as Docker, containerd, and others.</li>
+    </ul>
+
+    <p>Lets Take an example of two nodes Maste Node(Control Plan), Worker Node(Data Plan)</p>
+  </section>
+
+  <section id="kubernetes-distributions">
+    <h1>Kubernetes Distributions</h1>
+    <p><strong>What is Kubernetes distrubutions?</strong></p>
+    <p>A Kubernetes distribution is a software package that provides a pre-built version of Kubernetes</p>
+    <ul>
+      <li>For Examples - Linux</li>
+      <ol>
+        <li>Amazon Linux</li>
+        <li>Ubuntu</li>
+        <li>CentOs</li>
+      </ol>
+    </ul>
+    <div class="content-image">
+      <img src="./Distrubutions_of_Kubernetes.jpg" alt="Architecture">
+    </div>
+  </section>
+
+
+  <section id="difference-kubernetes-eks">
+    <h2>Difference Between Kubernetes and EKS</h2>
+    <table>
+      <tr>
+        <th>Kubernetes</th>
+        <th>Amazon EKS</th>
+      </tr>
+      <tr>
+        <td>Not managed (self-managed)</td>
+        <td>Managed by AWS</td>
+      </tr>
+      <tr>
+        <td>Open Source</td>
+        <td>Amazon EKS is a managed service provided by AWS, and the management aspect is not open source.</td>
+      </tr>
+    </table>
+  </section>
+  <section id="what-is-pod-kubernetes">
+    <h2>What is Mean By POD in Kubernetes?</h2>
+    <p>A Pod is like a blueprint that tells Kubernetes how to run a container. In Docker, we use a command like docker
+      run to start a container, but in Kubernetes, we create a file called pod.yml to define everything, and then we use
+      kubectl apply -f pod.yml to make it happen. Usually, a Pod has only one container, but sometimes it might have
+      more.</p>
+    <p><strong>Example of pod.yml file:</strong></p>
+    <pre>
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.14.2
+    ports:
+    - containerPort: 80</pre>
+  </section>
+
+  <section id="what-is-kubectl">
+    <h1>What Is Kubectl?</h1>
+    <p>Kubectl is a command-line tool for working with Kubernetes. It helps you manage your applications running on a
+      Kubernetes cluster.</p>
+  </section>
+  <section id="kubectl-commands">
+    <h2>Some of the most used kubectl commands</h2>
+    <pre>
+# Create a pod based on the configuration in pod.yml
+kubectl create -f pod.yml
+
+# Get information about the nodes in the cluster
+kubectl get nodes
+
+# See the list of running pods
+kubectl get pods
+
+# Get more details about a specific pod
+kubectl get pod -o wide
+
+# Display information about all resources
+kubectl get all
+
+# Display information in watch mode
+kubectl get pod -w
+    </pre>
+  </section>
+
+  <section id="kubernetes-deployment">
+    <h1>What is Kubernetes Deployment?</h1>
+    <p>A Kubernetes Deployment is a way to achieve automatic healing and scaling for your applications.</p>
+    <p><strong>Auto-Healing:</strong>When you create a Deployment in Kubernetes, it automatically takes care of
+      ensuring that the desired number of replicas (defined in the replicas variable in the deployment.yml file) are
+      always running. For instance, if you set replicas: 2, and one pod unexpectedly goes down or is intentionally
+      deleted, Kubernetes Deployment will swiftly create a new pod to replace it. This ensures that the specified number
+      of pods is maintained, promoting resilience and minimizing downtime.</p>
+    <p><strong>Auto-Scaling:</strong> The concept of auto-scaling is inherent in Kubernetes Deployments. If you need to
+      scale your application based on demand or other metrics, you can easily adjust the replicas value in your
+      Deployment configuration. For example, if you initially set replicas: 2 and later decide to scale up to handle
+      increased traffic, you can update it to replicas: 3, and Kubernetes will automatically create an additional pod.
+    </p>
+    <p><strong>In summary:</strong> Kubernetes Deployments provide a robust mechanism for managing the lifecycle of your
+      application, automatically healing it in case of failures, and allowing for seamless scaling to adapt to changing
+      requirements.</p>
+  </section>
+  <section id="deployment-commands">
+    <h2>Some of Kubernetes Deployment Commands</h2>
+    <pre>
+# Get information about Deployments
+kubectl get deploy
+
+# Get information about ReplicaSets
+kubectl get rs
+
+# Apply a Deployment configuration from a YAML file
+kubectl apply -f deployment.yml
+    </pre>
+    <p><strong>Deployment Overview</strong></p>
+    <div class="content-image">
+      <img src="./pod-depolyement.jpg" alt="Architecture">
+    </div>
+  </section>
+
+  <!-- --------------- -->
+
+  <section id="why-services-kubernetes">
+    <h2>Why Services Kubernetes?</h2>
+    <p>Kubernetes services play a crucial role in ensuring reliable and accessible communication between different
+      components of an application. Let's first understand how Kubernetes operates without services.</p>
+    <p><strong>Example:</strong> Imagine you have three pods (P1, P2, P3) serving an application, and three individuals
+      (I1, I2, I3) are accessing these pods. Now, if one of the pods, let's say P1, goes down due to some issue,
+      Kubernetes automatically creates a new pod to replace it. However, the problem arises because the new pod gets a
+      new IP address. As a result, I1, who was using the old IP to access the application, can no longer reach the newly
+      created pod.</p>
+    <p>This manual assignment of IP addresses to customers becomes impractical. This is where Kubernetes services come
+      into play.</p>
+    <p><strong>How Kubernetes Works with Services:</strong></p>
+    <p>Kubernetes introduces services to address the issue mentioned earlier. Here's how it works:</p>
+    <p><strong>Load Balancing:</strong> Kubernetes has a service called load balancing. This service is placed in front
+      of your deployment, and you provide the IP address of this load balancer to the individuals (I1, I2, I3). Now,
+      regardless of which pod is serving the application, users can access it through the load balancer's IP.</p>
+    <p><strong>Discovery Services:</strong> Even with load balancing, there's a potential problem of changing IP
+      addresses. This is where discovery services come in. Kubernetes uses labels and selectors to overcome this
+      challenge.</p>
+    <p>When you define your deployment in the deployment.yaml file, you include metadata with a label, for example,
+      label: exampleapp. This label is associated with all pods created by that deployment.</p>
+    <p>When a pod goes down and is autohealed, Kubernetes uses the same deployment.yaml file to create a new pod.
+      Although the IP address changes, the label remains the same.</p>
+    <p>With labels and selectors, the discovery service ensures that regardless of the pod's IP address, users can
+      reliably access the application through the load balancer using the label.</p>
+    <p>In <strong>summary</strong>, Kubernetes services, including load balancing and discovery services, simplify the
+      management of communication between different components of an application, ensuring reliability and accessibility
+      even when pods are dynamically created or replaced.</p>
+  </section>
+
+  <section id="types-of-services">
+    <h2>Type's Of Services</h2>
+    <p><strong>Different Types of Services:</strong></p>
+    <ul>
+      <li><strong>ClusterIP:</strong> Internal communication within the cluster.</li>
+      <li><strong>NodePort:</strong> Accessible within your organization, and potentially externally.</li>
+      <li><strong>LoadBalancer:</strong> Exposes the service to the external world, suitable for public-facing services.
+      </li>
+    </ul>
+    <p><strong>Example on Node Port:</strong><a
+        href="https://github.com/GadagojuShiva/kubernetes-examples/blob/main/service.yml" target="_blank">Link</a></p>
+    <p><strong>Note:</strong> We cannot do load balancing or expose the application to the external world on Minikube
+      because Minikube is a tool designed to run Kubernetes clusters locally for development and testing purposes. It
+      provides a lightweight and easy-to-set-up environment to simulate a Kubernetes cluster on a single machine.
+      However, there are certain limitations in Minikube that make it less suitable for certain production-like
+      scenarios, such as load balancing and exposing applications to the external world in the same way you would in a
+      production environment.</p>
+    <p><strong>ClusterIP:</strong> Default Service, This represents the default service type in Kubernetes.</p>
+  </section>
+  <section id="ingress">
+    <h2>What Is an Ingress?</h2>
+    <p>An <strong>Ingress</strong> is a Kubernetes object that defines routing rules, facilitating the management of
+      external access to services within a cluster.</p>
+    <p>In Kubernetes, without using Ingress, the default load balancing mechanism is round-robin, where incoming
+      requests are evenly distributed among the available pods. However, for more advanced features and routing
+      capabilities, Ingress can be employed with specific ingress controllers.</p>
+    <p><strong>Motivation for Ingress:</strong></p>
+    <p><strong>Problem-1:</strong> Lack of <strong>Advanced Features</strong> (Round Robin Mechanics) Prior to
+      Kubernetes, many companies utilized virtual machines (VMs) with various load balancers (e.g., Nginx, F5), offering
+      features like sticky sessions, path-based routing, domain-based routing, IP whitelisting, blacklisting, and more.
+      However, when transitioning to Kubernetes, some of these advanced features were initially missing. While
+      Kubernetes provides options like load balancing and NodePort for service exposure, features such as sticky
+      sessions and complex routing were not readily available.</p>
+    <p><strong>Problem-2:</strong> <strong>Cost</strong> When utilizing a load balancing service in Kubernetes, the
+      cloud provider generates an elastic IP, leading to increased costs.</p>
+    <p><strong>To address this gap</strong> Kubernetes introduced the Ingress concept. Instead of building all these
+      features natively into Kubernetes, it encourages users to create Ingress resources. Meanwhile, load balancing
+      companies developed Ingress controllers that integrate with Kubernetes. Users can then select an appropriate
+      Ingress controller, deploy it in their Kubernetes cluster, and create Ingress resources to define specific
+      requirements such as routing rules, thereby solving the identified problem.</p>
+    <a href="https://github.com/GadagojuShiva/kubernetes-examples/blob/main/ingress.yml" target="_blank">You can find
+      the Example of
+      ingress</a>
+    <pre># Create Ingress resource from ingress.yml
+kubectl apply -f ingress.yml
+
+# Check the status of Ingress resources
+kubectl get ingress </pre>
+  </section>
+
+  <section id="ssl-tls-strategies">
+    <h2>SSL/TLS Termination Strategies:</h2>
+    <p>Here are the main strategies:</p>
+
+    <h3>SSL PassThrough</h3>
+    <p>‘SSL passthrough’ passes encrypted HTTPS traffic directly to the backend servers without decrypting the traffic
+      on the load balancer. So any nodes can't read the contents in the traffic and pass through them all the way to the
+      destination.</p>
+    <img src="./SSL-Passthrough.jpg" alt="SSL PassThrough">
+
+    <h3>SSL Offloading</h3>
+    <p>SSL termination (a.k.a. SSL Offloading) decrypts all HTTPS traffic when it arrives at the load balancer, and the
+      data is sent to the destination server as plain HTTP traffic.</p>
+    <img src="./SSL-Offloading.jpg" alt="SSL Offloading">
+
+    <h3>SSL Bridging</h3>
+    <p>SSL bridging is a process where incoming encrypted (SSL/TLS) traffic is decrypted at a load balancer or a similar
+      device. The load balancer inspects the decrypted traffic for security purposes and then re-encrypts it before
+      forwarding it to the backend servers. This allows the load balancer to perform security checks on the traffic
+      without burdening the backend servers with the task of SSL/TLS encryption and decryption.</p>
+    <img src="./SSL-Bridging-updated.jpg" alt="SSL Bridging">
+  </section>
+  <!-- --------------- -->
+  <section id="kubernetes-rbac">
+    <h2>Introduction to Kubernetes RBAC (Role-Based Access Control)</h2>
+    <p>Kubernetes Role-Based Access Control (RBAC) is a security feature that controls access to Kubernetes resources
+      based on a user's role. It's a type of identity and access management (IAM) in AWS.</p>
+
+    <h3>Example:</h3>
+    <p>Okay, imagine Kubernetes is like a big shared office space, and different teams work in different rooms. RBAC, or
+      Role-Based Access Control, is like giving everyone the right keys to the right rooms and saying what they can do
+      there.</p>
+
+    <p><strong>Role:</strong> (Giving permissions to act on a work) A 'Role' is like a specific job. Let's say we have a
+      job called 'Pod Viewer,' which means you can only look at and get information about pods.</p>
+
+    <p><strong>Role Binding:</strong> (attaching the role to the user) 'Role Binding' is like giving that job to a
+      person. If we give the 'Pod Viewer' job to Alice, it means she can only look at and get info about pods.</p>
+
+    <p>So, in Kubernetes, we create a 'Pod Viewer' job (Role) and then give that job to specific people (Role Binding).
+      This way, each person can only do what their job allows, making sure they don't mess with things they shouldn't.
+      It's like making sure everyone has the right keys to the right rooms in our shared office space.</p>
+
+    <p>In Kubernetes, creating users is not like how we do it on regular systems like Linux. Instead of using commands
+      to add users, Kubernetes lets external services handle user management. For example, many apps now allow you to
+      log in with your Google or Instagram account. In this case, Kubernetes relies on these external services for user
+      information. So, making users in Kubernetes means connecting to these outside sources for user details, not using
+      the usual user creation commands.</p>
+  </section>
+  <!-- --------------- -->
+  <section id="custom-resource-definition">
+    <h2>Custom Resource Definition (CRD)</h2>
+    <p><strong>Purpose:</strong> Enhancing Kubernetes with additional features that are not present in the core
+      Kubernetes API.</p>
+    <p><strong>Example Use Case:</strong> If you need an advanced security feature, you might create a Custom Resource
+      Definition for a custom security policy.</p>
+
+    <h3>Components:</h3>
+    <ul>
+      <li><strong>CRD:</strong> Custom Resource Definition is like a blueprint. It defines a new resource type along
+        with its properties, similar to how a Deployment resource is defined in a YAML file.</li>
+      <li><strong>CR:</strong> Custom Resource is an instance of the custom resource type defined by a CRD. It
+        represents the actual object you want to create or manage, like an instance of your advanced security policy.
+      </li>
+      <li><strong>Custom Controllers:</strong> These are controllers created to watch and manage Custom Resources. They
+        define the behavior and actions associated with your custom resource type.</li>
+    </ul>
+    <img src="./flow-of-custom-resources.jpg" alt="Custom Resource Definition Components">
+
+    <h3>Example Explanation:</h3>
+    <p>Imagine you want to manage a specialized security policy in your Kubernetes cluster.</p>
+    <ul>
+      <li>You create a Custom Resource Definition (CRD) that defines what this security policy should look like and what
+        properties it should have.</li>
+      <li>Users can then create instances of this security policy using Custom Resources (CR). These instances conform
+        to the blueprint laid out by the CRD.</li>
+      <li>Custom Controllers watch for these custom resources. For instance, you might have a "SecurityPolicyController"
+        specifically built to handle the lifecycle of your custom security policies.</li>
+      <li>When a user creates or updates a custom resource, the associated custom controller takes action. It could
+        enforce security policies, update configurations, or trigger other actions based on the defined behavior.</li>
+    </ul>
+
+    <h3>Analogy:</h3>
+    <p>Think of a CRD as the form you fill out to request a new service (e.g., advanced security).</p>
+    <p>The CR is the actual form you submit, specifying the details of the service you want.</p>
+    <p>Custom Controllers are like the service providers who process your form, ensuring that the requested service is
+      implemented and maintained according to your specifications.</p>
+
+    <p>This mechanism provides extensibility to Kubernetes, allowing users to define and manage custom resources beyond
+      what is provided by default in Kubernetes.</p>
+  </section>
+
+  <section id="configmap-secret-differences">
+    <h2>ConfigMaps and Secrets in Kubernetes</h2>
+
+    <p><strong>ConfigMaps:</strong></p>
+    <ul>
+      <li>Used to store non-sensitive configuration data in key-value pairs.</li>
+      <li>Consumed by Pods and other resources in a Kubernetes cluster.</li>
+    </ul>
+    <p><strong>Example:</strong></p>
+    <p>Imagine you have a web application that connects to a MySQL database...</p>
+
+    <p><strong>Secrets:</strong></p>
+    <ul>
+      <li>Used to separate sensitive data from application code and configuration.</li>
+      <li>Ensures a more secure handling of sensitive information within the cluster.</li>
+    </ul>
+    <p><strong>Example:</strong></p>
+    <p>Passwords, database details...</p>
+
+    <h3>Differences between ConfigMap and Secrets</h3>
+    <table>
+      <tr>
+        <th>Feature</th>
+        <th>Secrets</th>
+        <th>ConfigMaps</th>
+      </tr>
+      <tr>
+        <td>Purpose</td>
+        <td>Securely store sensitive data</td>
+        <td>Store non-sensitive configuration</td>
+      </tr>
+      <tr>
+        <td>Data Security</td>
+        <td>Encoded (not encrypted)</td>
+        <td>Plain text</td>
+      </tr>
+      <tr>
+        <td>Example Use Cases</td>
+        <td>Database credentials, API keys</td>
+        <td>Environment variables, config files</td>
+      </tr>
+      <tr>
+        <td>Pod Consumption</td>
+        <td>Environment variables, volumes</td>
+        <td>Environment variables, volumes</td>
+      </tr>
+      <tr>
+        <td>Immutability</td>
+        <td>Immutable after creation</td>
+        <td>Immutable after creation</td>
+      </tr>
+      <tr>
+        <td>Encoding</td>
+        <td>Base64 encoded</td>
+        <td>Plain text</td>
+      </tr>
+    </table>
+  </section>
+  <section id="kubernetes-monitoring">
+    <h2>Kubernetes Monitoring</h2>
+
+    <p>Monitoring is crucial in Kubernetes to keep track of how everything is running...</p>
+
+    <p><strong>Prometheus:</strong> Think of Prometheus as the detective. It asks questions about what's happening in
+      the clusters.</p>
+
+    <p><strong>Grafana:</strong> Now, imagine Grafana as the artist who takes the detective's findings and turns them
+      into visual, easy-to-understand charts and graphs...</p>
+
+    <p>So, Prometheus queries the clusters, Grafana makes the information look good, and together they help you keep
+      everything in check.</p>
+  </section>
+
+  <!-- --------------- -->
+  <img src="helm-2.png" alt="Helm Icon" class="helm-img" id="helmIcon" style="width: 80px; height: 80px;">
+  <div id="footer">
+    <p>Blog by <strong>@Gadagoju Shiva</strong></p>
+  </div>
+  <script src="./script.js"></script>
+</body>
+</html>

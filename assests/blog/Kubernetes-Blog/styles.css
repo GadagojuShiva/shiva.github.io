@@ -1,0 +1,425 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #f4cd00;
+    color: #fff;
+    padding: 1em;
+    text-align: center;
+}
+
+section {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+h2 {
+    color: #333;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.helm-img {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    transition: transform 0.3s;
+    cursor: pointer;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th,
+td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+/* Additional styling for alternating row colors */
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.content-image img {
+    width: 100%;
+    height: auto;
+}
+
+#what-is-pod-kubernetes pre {
+    background-color: #333;
+    color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    overflow-x: auto;
+    /* Enable horizontal scroll if needed */
+}
+
+#kubectl-commands pre {
+    background-color: #333;
+    color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    overflow-x: auto;
+    /* Enable horizontal scroll if needed */
+}
+
+#kubernetes-deployment {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+#kubernetes-deployment h1 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+#kubernetes-deployment p {
+    color: #555;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+#kubernetes-deployment strong {
+    color: #007bff;
+}
+
+#deployment-commands pre,
+#deployment-commands code {
+    background-color: #333;
+    color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    overflow-x: auto;
+    /* Enable horizontal scroll if needed */
+}
+
+#deployment-commands p strong {
+    color: #007bff;
+}
+
+#why-services-kubernetes {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+#why-services-kubernetes h1 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+#why-services-kubernetes p {
+    color: #555;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+#why-services-kubernetes strong {
+    color: #007bff;
+}
+
+#types-of-services {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+#types-of-services h1 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+#types-of-services p {
+    color: #555;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+#types-of-services strong {
+    color: #007bff;
+}
+
+#ingress {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+#ingress h1 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+#ingress p {
+    color: #555;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+#ingress strong {
+    color: #007bff;
+}
+
+#ingress pre {
+    background-color: #282c34;
+    color: #61dafb;
+    padding: 15px;
+    border-radius: 5px;
+    overflow-x: auto;
+}
+
+#ingress a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+#ingress a:hover {
+    text-decoration: underline;
+}
+
+#ssl-tls-strategies {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+#ssl-tls-strategies h1 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+#ssl-tls-strategies p {
+    color: #555;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+#ssl-tls-strategies strong {
+    color: #007bff;
+}
+
+#ssl-tls-strategies img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin: 15px 0;
+}
+
+#kubernetes-rbac {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+#kubernetes-rbac h1 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+#kubernetes-rbac p {
+    color: #555;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+#kubernetes-rbac strong {
+    color: #007bff;
+}
+
+#custom-resource-definition {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+#custom-resource-definition h1 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+#custom-resource-definition p {
+    color: #555;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+#custom-resource-definition strong {
+    color: #007bff;
+}
+
+#custom-resource-definition img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin: 15px 0;
+}
+
+#configmap-secret-differences {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+#configmap-secret-differences h1 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+#configmap-secret-differences p {
+    color: #555;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+#configmap-secret-differences strong {
+    color: #007bff;
+}
+
+#configmap-secret-differences table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+#configmap-secret-differences table,
+#configmap-secret-differences th,
+#configmap-secret-differences td {
+    border: 1px solid #ddd;
+}
+
+#configmap-secret-differences th,
+#configmap-secret-differences td {
+    padding: 10px;
+    text-align: left;
+}
+
+#kubernetes-monitoring {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+#kubernetes-monitoring h1 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+#kubernetes-monitoring p {
+    color: #555;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+#kubernetes-monitoring strong {
+    color: #007bff;
+}
+
+#footer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#footer p {
+    color: black;
+    font-size: 14px;
+}
+
+/* Media Query for Responsive Design */
+@media only screen and (max-width: 600px) {
+    section {
+        padding: 10px;
+    }
+
+    table {
+        font-size: 14px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    #footer p {
+        font-size: 12px;
+    }
+}
