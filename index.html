@@ -6,7 +6,7 @@
 <meta name=viewport content="width=device-width,initial-scale=1">
 <title>Gadagoju Shiva - Personal Portfolio</title>
 <link rel="shortcut icon" href=./assests/images/main-profile.png type=image/x-icon>
-<link rel=stylesheet href=./assests/css/styles.css>
+<link rel=stylesheet href=./assests/css/style.css>
 <link rel=preconnect href=https://fonts.googleapis.com>
 <link rel=preconnect href=https://fonts.gstatic.com crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel=stylesheet>
@@ -45,7 +45,7 @@
 </div>
 <div class=contact-info>
 <p class=contact-title>Phone</p>
-<a href=tel:+916304234136 class=contact-link>+91 6304234136</a>
+<a href="tel:+91 6304234136" class=contact-link>+91 6304234136</a>
 </div>
 </li>
 <li class=contact-item>
@@ -54,7 +54,7 @@
 </div>
 <div class=contact-info>
 <p class=contact-title>Birthday</p>
-<time datetime=1982-06-23>Dec 02, 2000</time>
+<time datetime=2000-12-02>Dec 02, 2000</time>
 </div>
 </li>
 <li class=contact-item>
@@ -112,22 +112,11 @@ Hello 👋 ! My name is Gadagoju Shiva. I'm a recent graduate from 2022, and I s
 </p>
 </section>
 <section class=service>
-<h3 class="h3 service-title">What i'm doing</h3>
+<h3 class="h3 service-title">I am good at</h3>
 <ul class=service-list>
 <li class=service-item>
 <div class=service-icon-box>
-<img src=./assests/images/amazon-aws.svg alt="design icon" width=40>
-</div>
-<div class=service-content-box>
-<h4 class="h4 service-item-title">AWS Cloud</h4>
-<p class=service-item-text>
-Leveraging my proficiency in AWS services, CI/CD practices, and DevOps tools to ensure efficient and secure cloud solutions.
-</p>
-</div>
-</li>
-<li class=service-item>
-<div class=service-icon-box>
-<img src=./assests/images/devops-2.svg alt="Web development icon" width=40>
+<img src=./assests/images/devops-2.svg alt="DevOps icon" width=40>
 </div>
 <div class=service-content-box>
 <h4 class="h4 service-item-title">DevOps</h4>
@@ -138,48 +127,17 @@ Implementing DevOps methodologies to streamline development and deployment proce
 </li>
 <li class=service-item>
 <div class=service-icon-box>
-<img src=./assests/images/docker.svg alt="mobile app icon" width=40>
+<img src=./assests/images/aws.svg alt="AWS Cloud" width=40>
 </div>
 <div class=service-content-box>
-<h4 class="h4 service-item-title">Docker</h4>
+<h4 class="h4 service-item-title">AWS Cloud</h4>
 <p class=service-item-text>
-Proficiently utilizing Docker for containerization, enhancing software development and deployment through container technology.
-</p>
-</div>
-</li>
-<li class=service-item>
-<div class=service-icon-box>
-<img src=./assests/images/kubernets.svg alt="camera icon" width=40>
-</div>
-<div class=service-content-box>
-<h4 class="h4 service-item-title">Kubernetes</h4>
-<p class=service-item-text>
-Employing Kubernetes for container orchestration, ensuring scalable and resilient application management within cloud environments.
+Leveraging my proficiency in AWS services, CI/CD practices, and DevOps tools to ensure efficient and secure cloud solutions.
 </p>
 </div>
 </li>
 </ul>
 </section>
-<div class=modal-container data-modal-container>
-<div class=overlay data-overlay></div>
-<section class=testimonials-modal>
-<button class=modal-close-btn data-modal-close-btn>
-<ion-icon name=close-outline></ion-icon>
-</button>
-<div class=modal-img-wrapper>
-<figure class=modal-avatar-box>
-<img src=./assets/images/avatar-1.png alt="Gadagoju Shiva" width=80 data-modal-img>
-</figure>
-<img src=./assests/images/customer-testimonial.svg alt="quote icon">
-</div>
-<div class=modal-content>
-<h4 class="h3 modal-title" data-modal-title>Gadagoju Shiva</h4>
-<time datetime=2021-06-14>26-Dec-2023</time>
-<div data-modal-text>
-</div>
-</div>
-</section>
-</div>
 <div>
 <h3 class="h3 github-title">GitHub Insights</h3>
 <br>
@@ -194,12 +152,12 @@ Employing Kubernetes for container orchestration, ensuring scalable and resilien
 <ul class="clients-list has-scrollbar">
 <li class=clients-item>
 <a href=https://www.credly.com/badges/015ecab6-7110-4eb8-a07a-ef88d61bdfbc/public_url target=_blank>
-<img src=./assests/images/aws-certified-solutions-architect-associate.png alt="client logo">
+<img src=./assests/images/aws-certified-solutions-architect-associate.png alt="Certfications logo">
 </a>
 </li>
 <li class=clients-item>
 <a href=https://www.credly.com/badges/7ec20015-8c43-4cac-b7c6-feae9cfbe18c/public_url target=_blank>
-<img src=./assests/images/aws-certified-cloud-practitioner.png alt="client logo">
+<img src=./assests/images/aws-certified-cloud-practitioner.png alt="Certfications logo">
 </a>
 </li>
 </ul>
@@ -249,8 +207,7 @@ During my time at this school, I laid the foundation for my educational journey,
 </div>
 <ol class=timeline-list>
 <li class=timeline-item>
-<h4 class="h4 timeline-item-title">Deployment of Java Spring Boot App on Kubernetes - ArgoCD
-</h4>
+<h4 class="h4 timeline-item-title">Deployment of Java Spring Boot App on Kubernetes - ArgoCD</h4>
 <a href=https://github.com/GadagojuShiva/employee-management-java-spring-boot target=_blank>GitHub Repo</a>
 <p class=timeline-text>
 Established a streamlined pipeline using Jenkins for continuous integration and deployment from GitHub. Successfully employed Docker for efficient application packaging and deployment Orchestrated Kubernetes clusters with Minikube for scalability.Implemented ArgoCD for automated and reliable application deployments
@@ -264,33 +221,17 @@ Containerized a Django ToDo application using Docker, simplifying deployment and
 </p>
 </li>
 <li class=timeline-item>
-<h4 class="h4 timeline-item-title">AWS Cloud Migration: Lift & Shift Project </h4>
+<h4 class="h4 timeline-item-title">AWS Cloud Migration: Lift & Shift Project</h4>
 <a href=https://github.com/GadagojuShiva/aws-projects/tree/main/AWS-LIFT-AND-SHIFT-PROJECT target=_blank>GitHub Repo</a>
 <p class=timeline-text>
 Successfully migrated on-premises applications to AWS, modernizing systems and achieving cost savings. Established a secure environment with VPC, security groups, and deployed EC2 instances using ELB and Auto Scaling. Transitioned data to S3 and managed traffic through Route 53, enhancing overall security and efficiency.
 </p>
 </li>
 <li class=timeline-item>
-<h4 class="h4 timeline-item-title">AWS CI/CD Pipeline for Python App </h4>
+<h4 class="h4 timeline-item-title">AWS CI/CD Pipeline for Python App</h4>
 <a href=https://github.com/GadagojuShiva/aws-projects/tree/main/AWS-End-To-End-CICD-Projects target=_blank>GitHub Repo</a>
 <p class=timeline-text>
 Orchestrated an end-to-end CI/CD pipeline using AWS tools for a Python application, resulting in streamlined development, testing, and deployment on EC2 instances. Enhanced development efficiency and code reliability, contributing to the project's success.
-</p>
-</li>
-<li class=timeline-item>
-<h4 class="h4 timeline-item-title">AWS Cloud Cost Optimization - Identifying Stale EBS Snapshots
-</h4>
-<a href=https://github.com/GadagojuShiva/aws-projects/tree/main/AWS_Cloud_Cost_Optimization_using_lambda_functions target=_blank>GitHub Repo</a>
-<p class=timeline-text>
-Developed an AWS Lambda function to automate the identification and removal of redundant EBS snapshots, resulting in substantial cost savings.
-</p>
-</li>
-<li class=timeline-item>
-<h4 class="h4 timeline-item-title">AWS VPC Infrastructure Enhancement
-</h4>
-<a href=https://github.com/GadagojuShiva/aws-projects/tree/main/AWS_VPC_with_servers_in_private_subnets_NAT target=_blank>GitHub Repo</a>
-<p class=timeline-text>
-Designed and deployed a robust AWS Virtual Private Cloud (VPC) infrastructure.Established private subnets for enhanced security measures.Strengthened security and scalability with NAT Gateways and Auto Scaling.Configured an Application Load Balancer (ALB) for efficient traffic management.Integrated an Amazon S3 Gateway VPC Endpoint to ensure secure access to S3 resources.
 </p>
 </li>
 </ol>
@@ -300,7 +241,7 @@ Designed and deployed a robust AWS Virtual Private Cloud (VPC) infrastructure.Es
 <ul class="skills-list content-card">
 <li class=skills-item>
 <div class=title-wrapper>
-<h5 class=h5>AWS Cloud</h5>
+<h5 class=h5>Docker</h5>
 <data value=80>80%</data>
 </div>
 <div class=skill-progress-bg>
@@ -309,7 +250,7 @@ Designed and deployed a robust AWS Virtual Private Cloud (VPC) infrastructure.Es
 </li>
 <li class=skills-item>
 <div class=title-wrapper>
-<h5 class=h5>DevOps</h5>
+<h5 class=h5>Kubernetes</h5>
 <data value=70>70%</data>
 </div>
 <div class=skill-progress-bg>
@@ -318,24 +259,68 @@ Designed and deployed a robust AWS Virtual Private Cloud (VPC) infrastructure.Es
 </li>
 <li class=skills-item>
 <div class=title-wrapper>
-<h5 class=h5>Docker</h5>
-<data value=90>90%</data>
+<h5 class=h5>Jenkins</h5>
+<data value=70>70%</data>
 </div>
 <div class=skill-progress-bg>
-<div class=skill-progress-fill style=width:90%></div>
+<div class=skill-progress-fill style=width:70%></div>
 </div>
 </li>
 <li class=skills-item>
 <div class=title-wrapper>
-<h5 class=h5>Kubernetes</h5>
-<data value=50>60%</data>
+<h5 class=h5>Ansible</h5>
+<data value=70>70%</data>
 </div>
 <div class=skill-progress-bg>
-<div class=skill-progress-fill style=width:50%></div>
+<div class=skill-progress-fill style=width:70%></div>
+</div>
+</li>
+<li class=skills-item>
+<div class=title-wrapper>
+<h5 class=h5>Terraform</h5>
+<data value=80>80%</data>
+</div>
+<div class=skill-progress-bg>
+<div class=skill-progress-fill style=width:80%></div>
+</div>
+</li>
+<li class=skills-item>
+<div class=title-wrapper>
+<h5 class=h5>Git Bash</h5>
+<data value=80>80%</data>
+</div>
+<div class=skill-progress-bg>
+<div class=skill-progress-fill style=width:80%></div>
+</div>
+</li>
+<li class=skills-item>
+<div class=title-wrapper>
+<h5 class=h5>GitHub</h5>
+<data value=70>70%</data>
+</div>
+<div class=skill-progress-bg>
+<div class=skill-progress-fill style=width:70%></div>
+</div>
+</li>
+<li class=skills-item>
+<div class=title-wrapper>
+<h5 class=h5>ArgoCD</h5>
+<data value=600>60%</data>
+</div>
+<div class=skill-progress-bg>
+<div class=skill-progress-fill style=width:60%></div>
+</div>
+</li>
+<li class=skills-item>
+<div class=title-wrapper>
+<h5 class=h5>AWS Cloud</h5>
+<data value=70>70%</data>
+</div>
+<div class=skill-progress-bg>
+<div class=skill-progress-fill style=width:70%></div>
 </div>
 </li>
 </ul>
-<br>
 </section>
 </article>
 <article class=portfolio data-page=portfolio>
@@ -355,6 +340,12 @@ Designed and deployed a robust AWS Virtual Private Cloud (VPC) infrastructure.Es
 </li>
 <li class=filter-item>
 <button data-filter-btn>kubernetes</button>
+</li>
+<li class=filter-item>
+<button data-filter-btn>iac</button>
+</li>
+<li class=filter-item>
+<button data-filter-btn>configuration-management</button>
 </li>
 </ul>
 <div class=filter-select-box>
@@ -377,6 +368,12 @@ Designed and deployed a robust AWS Virtual Private Cloud (VPC) infrastructure.Es
 <li class=select-item>
 <button data-select-item>kubernetes</button>
 </li>
+<li class=select-item>
+<button data-select-item>iac</button>
+</li>
+<li class=select-item>
+<button data-select-item>configuration-management</button>
+</li>
 </ul>
 </div>
 <ul class=project-list>
@@ -386,7 +383,7 @@ Designed and deployed a robust AWS Virtual Private Cloud (VPC) infrastructure.Es
 <div class=project-item-icon-box>
 <ion-icon name=eye-outline></ion-icon>
 </div>
-<img src="./assests/images/Deployment of K8's.jpg" alt="Cloud Migration" loading=lazy>
+<img src="./assests/images/Deployment of K8's.jpg" alt=kubernetes loading=lazy>
 </figure>
 <h3 class=project-title>Deployment of Java Spring Boot App on Kubernetes - ArgoCD</h3>
 <p class=project-category>kubernetes</p>
@@ -398,7 +395,7 @@ Designed and deployed a robust AWS Virtual Private Cloud (VPC) infrastructure.Es
 <div class=project-item-icon-box>
 <ion-icon name=eye-outline></ion-icon>
 </div>
-<img src=./assests/images/lift.jpg alt="Cloud Migration" loading=lazy>
+<img src=./assests/images/cloud-migration.jpg alt="aws cloud" loading=lazy>
 </figure>
 <h3 class=project-title>Cloud Migration</h3>
 <p class=project-category>aws cloud</p>
@@ -410,7 +407,7 @@ Designed and deployed a robust AWS Virtual Private Cloud (VPC) infrastructure.Es
 <div class=project-item-icon-box>
 <ion-icon name=eye-outline></ion-icon>
 </div>
-<img src=./assests/images/containerization.jpg alt=Containerization loading=lazy>
+<img src=./assests/images/containerization.jpg alt=docker loading=lazy>
 </figure>
 <h3 class=project-title>Django Application Containerization</h3>
 <p class=project-category>docker</p>
@@ -422,7 +419,7 @@ Designed and deployed a robust AWS Virtual Private Cloud (VPC) infrastructure.Es
 <div class=project-item-icon-box>
 <ion-icon name=eye-outline></ion-icon>
 </div>
-<img src=./assests/images/kubernetes.jpg alt=Containerization loading=lazy>
+<img src=./assests/images/kubernetes.jpg alt=kubernetes loading=lazy>
 </figure>
 <h3 class=project-title>Todo Application Deployment on Kubernetes</h3>
 <p class=project-category>kubernetes</p>
@@ -434,34 +431,34 @@ Designed and deployed a robust AWS Virtual Private Cloud (VPC) infrastructure.Es
 <div class=project-item-icon-box>
 <ion-icon name=eye-outline></ion-icon>
 </div>
-<img src=./assests/images/cicd.jpg alt="CI/CD Pipeline" loading=lazy>
+<img src=./assests/images/cicd.jpg alt="aws cloud" loading=lazy>
 </figure>
 <h3 class=project-title>CI/CD Pipeline</h3>
 <p class=project-category>aws cloud</p>
 </a>
 </li>
-<li class="project-item active" data-filter-item data-category="aws cloud">
-<a href=https://github.com/GadagojuShiva/aws-projects/tree/main/AWS_Cloud_Cost_Optimization_using_lambda_functions target=_blank>
+<li class="project-item active" data-filter-item data-category=iac>
+<a href=https://github.com/GadagojuShiva/terraform_examples target=_blank>
 <figure class=project-img>
 <div class=project-item-icon-box>
 <ion-icon name=eye-outline></ion-icon>
 </div>
-<img src=./assests/images/cost-optimize.jpg alt="Cloud Cost Optimization" loading=lazy>
+<img src=./assests/images/terrafom-1.jpg alt=iac loading=lazy>
 </figure>
-<h3 class=project-title>Cloud Cost Optimization</h3>
-<p class=project-category>aws cloud</p>
+<h3 class=project-title>Terraform configurations that I use for personal practice</h3>
+<p class=project-category>iac</p>
 </a>
 </li>
-<li class="project-item active" data-filter-item data-category="aws cloud">
-<a href=https://github.com/GadagojuShiva/aws-projects/tree/main/AWS_VPC_with_servers_in_private_subnets_NAT target=_blank>
+<li class="project-item active" data-filter-item data-category=configuration-management>
+<a href=https://github.com/GadagojuShiva/configuration-management-ansible target=_blank>
 <figure class=project-img>
 <div class=project-item-icon-box>
 <ion-icon name=eye-outline></ion-icon>
 </div>
-<img src=./assests/images/vpc.jpg alt=VPC loading=lazy>
+<img src=./assests/images/ansible-1.jpg alt=configuration-management loading=lazy>
 </figure>
-<h3 class=project-title>Robust AWS Virtual Private Cloud (VPC)</h3>
-<p class=project-category>aws cloud</p>
+<h3 class=project-title>Automate the process of configuring servers</h3>
+<p class=project-category>configuration-management</p>
 </a>
 </li>
 </ul>
@@ -476,13 +473,13 @@ Designed and deployed a robust AWS Virtual Private Cloud (VPC) infrastructure.Es
 <li class=blog-post-item>
 <a href=./assests/blog/Kubernetes-Blog/index.html target=_blank>
 <figure class=blog-banner-box>
-<img src=assests/images/kubernetes-blog.png alt="Decoding Kubernetes" loading=lazy>
+<img src=./assests/images/kubernetes-blog.png alt="Decoding Kubernetes" loading=lazy>
 </figure>
 <div class=blog-content>
 <div class=blog-meta>
 <p class=blog-category>Technology</p>
 <span class=dot></span>
-<time datetime=2022-02-23>Jan 17, 2024</time>
+<time datetime=2024-01-17>Jan 17, 2024</time>
 </div>
 <h3 class="h3 blog-item-title">Decoding Kubernetes: Your Simple Blog Guide to Container Orchestration</h3>
 <p class=blog-text>
@@ -495,13 +492,13 @@ Dive into the world of Kubernetes, the powerhouse for managing containerized app
 <a href=./assests/blog/java-srping-boot-deployment/index.html target=_blank>
 <figure class=blog-banner-box>
 <img src=./assests/images/project-blog-1.png alt="Kubernetes with Argo
-                                    CD and Jenkins" loading=lazy>
+                  CD and Jenkins" loading=lazy>
 </figure>
 <div class=blog-content>
 <div class=blog-meta>
 <p class=blog-category>Project</p>
 <span class=dot></span>
-<time datetime=2022-02-23>Jan 15, 2024</time>
+<time datetime=2024-01-15>Jan 15, 2024</time>
 </div>
 <h3 class="h3 blog-item-title">Automated Java App Deployment on Kubernetes with Argo CD and Jenkins</h3>
 <p class=blog-text>
@@ -522,7 +519,7 @@ Explore the seamless integration of Jenkins, Argo CD, and Kubernetes for automat
 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d487295.22889760986!2d78.07768236421185!3d17.412076750957674!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb99daeaebd2c7%3A0xae93b78392bafbc2!2sHyderabad%2C%20Telangana!5e0!3m2!1sen!2sin!4v1699328936179!5m2!1sen!2sin" width=400 height=300 loading=lazy></iframe>
 </figure>
 </section>
-<p id="quote-by-Winston">Success is not final, failure is not fatal: It is the courage to continue that counts. - Winston S. Churchill</p>
+<p id=quote-by-Winston>Success is not final, failure is not fatal: It is the courage to continue that counts. - Winston S. Churchill</p>
 <p style=color:#fff;text-align:center>Thank You</p>
 </article>
 </div>
