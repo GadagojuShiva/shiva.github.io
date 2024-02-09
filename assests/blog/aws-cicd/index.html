@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang=en>
+<head>
+<meta charset=UTF-8>
+<meta http-equiv=X-UA-Compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<link rel=stylesheet href="https://fonts.googleapis.com/css2?family=YourDesiredFont&display=swap">
+<link rel="shortcut icon" href=./assets/images/main-profile.png type=image/x-icon>
+<link rel=stylesheet href=./assets/styles.css>
+<title>CI/CD Pipeline on AWS for Python App</title>
+</head>
+<body>
+<a href=# class=scroll-button>Back To Top</a>
+<header>
+<h1>Mastering CI/CD: Deploying Python Apps on AWS</h1>
+</header>
+<main>
+<section class=about>
+<p>Welcome to a comprehensive AWS-based project that automates the development lifecycle of a Python application. This initiative involves the setup of a <strong>Continuous Integration (CI)</strong> and
+<strong>Continuous Deployment (CD)</strong> pipeline using <strong>AWS CodeBuild</strong>,
+<strong>CodePipeline</strong>, and <strong>CodeDeploy</strong>. By seamlessly integrating source code management, building, and deployment processes, this project enhances efficiency and accelerates the delivery of your Python application.
+</p>
+</section>
+<nav id=table-of-contents>
+<h2>Table of Contents</h2>
+<ul>
+<li><a href=#step1>Step 1: Set up AWS CodeBuild for Build</a></li>
+<li><a href=#step2>Step 2: Set up AWS CodePipeline</a></li>
+<li><a href=#step3>Step 3: Set up AWS CodeDeploy</a></li>
+<li><a href=#step4>Step 4: Configure End-To-End CodePipeline</a></li>
+</ul>
+</nav>
+<section id=step1>
+<h2>Step 1: Set up AWS CodeBuild for Build</h2>
+<ol>
+<li>Access the AWS CodeBuild Console - Click On the Create Project:</li>
+<img src=./assets/images/1.png alt="Step 1 Image" class=step-image>
+<li>Name the Project (Example: Python-Build)</li>
+<img src=./assets/images/2.png alt="Step 1 Image" class=step-image>
+<h3>Configure Source Provider:</h3>
+<li>Scroll down and select "<strong>GitHub</strong>" as the provider.</li>
+<li>Select a public repository.</li>
+<li>Provide the GitHub repository URL.</li>
+<img src=./assets/images/3.png alt="Step 1 Image" class=step-image>
+<h3>Configure Build Settings:</h3>
+<li>Scroll down further and Select operating system: <strong>Ubuntu</strong>.</li>
+<img src=./assets/images/4.png alt="Step 1 Image" class=step-image>
+<li>Runtime: <strong>Standard</strong>.</li>
+<li>Image: <strong>Standard 5.0</strong>.</li>
+<img src=./assets/images/5.png alt="Step 1 Image" class=step-image>
+<li>Check the "<strong>privileged</strong>" checkbox for elevated privileges.</li>
+<img src=./assets/images/6.png alt="Step 1 Image" class=step-image>
+<h3>Build Specifications:</h3>
+<li>Scroll down to the build specs section.</li>
+<li>Select "Insert build commands."</li>
+<li>Copy and paste the commands from the GitHub repository link provided.</li>
+<img src=./assets/images/7.png alt="Step 1 Image" class=step-image>
+<h3>Create Build Project:</h3>
+<li>Click on "<strong>Create build project</strong>."</li>
+<img src=./assets/images/8.png alt="Step 1 Image" class=step-image>
+<h3>Ensure secrets are set up in Parameter Store for:</h3>
+<li>Docker URL: <a href=/python-app/docker/url>docker.io</a></li>
+<li>Docker password: <a href=/python-app/docker/password>Your Docker Password</a></li>
+<li>Username: <a href=/python-app/docker/username>Your Docker Username</a></li>
+<li>Initiate Build</li>
+<li>Click on "Start build."</li>
+<img src=./assets/images/9.png alt="Step 1 Image" class=step-image>
+<h3>Handle Decryption Error:</h3>
+<li>If decryption errors occur, it's due to insufficient IAM role permissions for SSM parameters.</li>
+<img src=./assets/images/10.png alt="Step 1 Image" class=step-image>
+<h3>Grant SSM Permissions:</h3>
+<li>Go to build details, scroll down, and in the environment tab, locate the service role.</li>
+<img src=./assets/images/11.png alt="Step 1 Image" class=step-image>
+<li>Click on the service role to open its details.</li>
+<img src=./assets/images/12.png alt="Step 1 Image" class=step-image>
+<li>Click on "Add permissions" or "Attach permissions."</li>
+<img src=./assets/images/13.png alt="Step 1 Image" class=step-image>
+<li>Search for "ssm" in the search bar, check the box for "SSM full access."</li>
+<img src=./assets/images/14.png alt="Step 1 Image" class=step-image>
+<img src=./assets/images/15.png alt="Step 1 Image" class=step-image>
+<li>Scroll down and click on "Add permissions."</li>
+<img src=./assets/images/16.png alt="Step 1 Image" class=step-image>
+<img src=./assets/images/17.png alt="Step 1 Image" class=step-image>
+<h3>Retry the Build:</h3>
+<li>Go back to CodeBuild and click on "Retry the build."</li>
+<img src=./assets/images/18.png alt="Step 1 Image" class=step-image>
+<li>Wait for the build to complete successfully.</li>
+<img src=./assets/images/19.png alt="Step 1 Image" class=step-image>
+<h3>If any steps fail, raise issues or retest on GitHub.</h3>
+<li>Go to Docker Hub <a href=https://hub.docker.com/ target=_blank>Docker</a></li>
+<li>Navigate to the repository associated with your project.</li>
+<li>Verify if the Docker image has been successfully pushed to the registry.</li>
+<li>This step ensures that the Docker image has been successfully built and pushed to the specified Docker Hub repository.</li>
+<img src=./assets/images/32.png alt="Step 1 Image" class=step-image>
+<li>
+<p><strong>Note:</strong> In My Case, It's Showing 1 Hour Ago because after the build there is a power interruption in my area, so that it was showing that pushed 1hr ago</p>
+</li>
+</ol>
+</section>
+<section id=step2>
+<h2>Step 2: Set up AWS CodePipeline</h2>
+<ol>
+<p>Navigate to the AWS Management Console, select CodePipeline, and click on "Create pipeline."</p>
+<img src=./assets/images/22.png alt="Step 2 Image" class=step-image>
+<li>Provide a Name and Select Pipeline Type:</li>
+<p>Give your pipeline a name and select "V2" as the pipeline type. Click "Next" to proceed.</p>
+<img src=./assets/images/23.png alt="Step 2 Image" class=step-image>
+<img src=./assets/images/24.png alt="Step 2 Image" class=step-image>
+<h3>Configure Source Provider:</h3>
+<p>Scroll down and select "GitHub (Version 2)" as the source provider. Choose an existing connection or create a new one to connect to your GitHub repository. Wait for the pop-up to connect and click "Next" when ready.</p>
+<img src=./assets/images/25.png alt="Step 2 Image" class=step-image>
+<h3>Skip Deployment Stage:</h3>
+<p>Click "Skip deployment stage" since we've already set up the deployment. Then, scroll down to review all configurations.</p>
+<img src=./assets/images/26.png alt="Step 2 Image" class=step-image>
+<h3>Review and Create Pipeline:</h3>
+<p>Review all the settings and configurations. Once everything looks correct, click "Create pipeline."
+</p>
+<img src=./assets/images/27.png alt="Step 2 Image" class=step-image>
+<img src=./assets/images/28.png alt="Step 2 Image" class=step-image>
+<img src=./assets/images/29.png alt="Step 2 Image" class=step-image>
+<h3>Wait for Pipeline Execution:</h3>
+<p>Wait for the pipeline execution to succeed. If there are any errors, don't worry; create a pull request for further assistance.</p>
+<img src=./assets/images/30.png alt="Step 2 Image" class=step-image>
+<img src=./assets/images/31.png alt="Step 2 Image" class=step-image>
+<h3>Check Docker Hub:</h3>
+<p>Go to Docker Hub (https://hub.docker.com/), navigate to the repository associated with your project, and verify if the Docker image has been successfully pushed to the registry. This confirms the successful completion of the CI part.</p>
+<img src=./assets/images/32.png alt="Step 2 Image" class=step-image>
+</ol>
+</section>
+<p class=congratulations>Congratulations! We have successfully set up CI for our Python application. We are now moving on to the CD part soon.</p>
+<section id=step3>
+<h2>Step 3: Set up AWS CodeDeploy</h2>
+<ol>
+<p>Navigate to the AWS CodeDeploy console., select CodeDeploy, and click on ""Create Application."</p>
+<img src=./assets/images/33.png alt="Step 3 Image" class=step-image>
+<p>Name your application and select the compute platform as "EC2/on-premises."</p>
+<img src=./assets/images/34.png alt="Step 3 Image" class=step-image>
+<p> Click "Next" to proceed.</p>
+<img src=./assets/images/35.png alt="Step 3 Image" class=step-image>
+<h3>Now Launch EC2 Instance:</h3>
+<p>Go to the EC2 console.</p>
+<img src=./assets/images/36.png alt="Step 3 Image" class=step-image>
+<img src=./assets/images/37.png alt="Step 3 Image" class=step-image>
+<li>Give a name to the instance.</li>
+<img src=./assets/images/38.png alt="Step 3 Image" class=step-image>
+<li>Choose an OS (e.g., Ubuntu) .</li>
+<img src=./assets/images/39.png alt="Step 3 Image" class=step-image>
+<li> select instance type (e.g., t2.micro) and Select or create a key pair</li>
+<img src=./assets/images/40.png alt="Step 3 Image" class=step-image>
+<li>enable auto-assign public IP.</li>
+<img src=./assets/images/41.png alt="Step 3 Image" class=step-image>
+<li>Launch the instance.
+</li>
+<img src=./assets/images/42.png alt="Step 3 Image" class=step-image>
+<h3>Install CodeDeploy Agent on EC2:</h3>
+<p>Go to this documentation: <a href=https://docs.aws.amazon.com/codedeploy/latest/userguide/codedeploy-agent-operations-install-ubuntu.html target=_blank>Code-Deploy-Agent-Installation</a></p>
+<img src=./assets/images/43.png alt="Step 3 Image" class=step-image>
+<li>Install CodeDeploy Agent on EC2:</li>
+<p>SSH into the EC2 instance using
+<pre>ssh -i key-name.pem ubuntu@public-ip</pre>
+</p>
+<img src=./assets/images/45.png alt="Step 3 Image" class=step-image>
+<img src=./assets/images/46.png alt="Step 3 Image" class=step-image>
+<p>Run
+<pre>sudo apt update</pre>
+</p>
+<img src=./assets/images/47.png alt="Step 3 Image" class=step-image>
+<p><strong>Now install Ruby and wget</strong></p>
+<pre>sudo apt install ruby-full</pre>
+<pre>sudo apt install wget</pre>
+<img src=./assets/images/48.png alt="Step 3 Image" class=step-image>
+<img src=./assets/images/49.png alt="Step 3 Image" class=step-image>
+<p>Download CodeDeploy agent installer from the correct S3 bucket URL.</p>
+<p>Go to <a href=https://docs.aws.amazon.com/codedeploy/latest/userguide/resource-kit.html#resource-kit-bucket-names target=_blank>Find Your Bucket Name Based On Your Region</a></p>
+<img src=./assets/images/50.png alt="Step  3 Image" class=step-image>
+<p>Choose The Bucket Name Based on Your Region</p>
+<img src=./assets/images/51.png alt="Step 3 Image" class=step-image>
+<p>Modify the Command:</p>
+<pre>wget https://bucket-name.s3.region-identifier.amazonaws.com/latest/install</pre>
+<P>Modified Command Looks Like:Example- My region is US-east-1</P>
+<pre>wget https://aws-codedeploy-us-east-1.s3.us-east-1.amazonaws.com/latest/install</pre>
+<img src=./assets/images/52.png alt="Step 3 Image" class=step-image>
+<p>Run The Following Commands:</p>
+<pre>chmod +x ./install code</pre>
+<pre>sudo ./install auto.</pre>
+<img src=./assets/images/53.png alt="Step 3 Image" class=step-image>
+<img src=./assets/images/54.png alt="Step 3 Image" class=step-image>
+<p>Check the agent status:</p>
+<pre>systemctl status codedeploy-agent</pre>
+<img src=./assets/images/55.png alt="Step 3 Image" class=step-image>
+<h2>Install Docker on EC2:</h2>
+<p>Run</p>
+<pre>sudo apt install docker.io -y</pre>
+<img src=./assets/images/56.png alt="Step 3 Image" class=step-image>
+<p>Create IAM Role for EC2:</p>
+<p>Go to IAM</p>
+<img src=./assets/images/57.png alt="Step 3 Image" class=step-image>
+<p>click on "Create Role</p>
+<img src=./assets/images/58.png alt="Step 3 Image" class=step-image>
+<p>Choose the use case as EC2 </p>
+<img src=./assets/images/59.png alt="Step 3 Image" class=step-image>
+<p>Attach the "AWSCodeDeployFullAccess" policy.</p>
+<img src=./assets/images/60.png alt="Step 3 Image" class=step-image>
+<p>Name the role</p>
+<img src=./assets/images/61.png alt="Step 3 Image" class=step-image>
+<p>Click on create Role</p>
+<img src=./assets/images/62.png alt="Step 3 Image" class=step-image>
+<h3>Assign IAM Role to EC2 Instance:</h3>
+<p>In the EC2 console, select the instance, go to "Actions," and choose "Security."</p>
+<img src=./assets/images/63.png alt="Step 3 Image" class=step-image>
+<p>Select Modify IAM role</p>
+<img src=./assets/images/64.png alt="Step 3 Image" class=step-image>
+<p>select the role created in the previous step.</p>
+<img src=./assets/images/65.png alt="Step 3 Image" class=step-image>
+<p>Restart CodeDeploy Agent and Update IAM Role:</p>
+<pre>sudo systemctl restart codedeploy-agent</pre>
+<img src=./assets/images/66.png alt="Step 3 Image" class=step-image>
+<p>Check the status:</p>
+<pre>systemctl status codedeploy-agent</pre>
+<img src=./assets/images/67.png alt="Step 3 Image" class=step-image>
+<p>Attach additional policy "AmazonEC2FullAccess" to the IAM role.</p>
+<img src=./assets/images/69.png alt="Step 3 Image" class=step-image>
+<img src=./assets/images/70.png alt="Step 3 Image" class=step-image>
+<img src=./assets/images/71.png alt="Step 3 Image" class=step-image>
+<h3>Create CodeDeploy Deployment Group:</h3>
+<p>Go to CodeDeploy, create a deployment group.</p>
+<p>Choose the service role</p>
+<img src=./assets/images/72.png alt="Step 3 Image" class=step-image>
+<p>check EC2 instances, and set key name and value.</p>
+<img src=./assets/images/73.png alt="Step 3 Image" class=step-image>
+<p>Uncheck the load balancer and create the deployment group.</p>
+<img src=./assets/images/74.png alt="Step 3 Image" class=step-image>
+<h3>Now Initiate Deployment:</h3>
+<p>Create a deployment,</p>
+<img src=./assets/images/75.png alt="Step 3 Image" class=step-image>
+<p>select the deployment group.</p>
+<img src=./assets/images/76.png alt="Step 3 Image" class=step-image>
+<p>Choose "GitHub" as the revision type and Enter repository name and latest commit ID.</p>
+<img src=./assets/images/77.png alt="Step 3 Image" class=step-image>
+<p>Click on "Create Deployment"</p>
+<img src=./assets/images/78.png alt="Step 3 Image" class=step-image>
+<p>Wait until the All stages successful</p>
+<img src=./assets/images/79.png alt="Step 3 Image" class=step-image>
+<img src=./assets/images/80.png alt="Step 3 Image" class=step-image>
+<p>Update Security Group of EC2</p>
+<p>In the EC2 console, go to the security group of the instance.</p>
+<p>Add an inbound rule allowing port 5000 from anywhere.</p>
+<img src=./assets/images/81.png alt="Step 3 Image" class=step-image>
+<li>Access the Application</li>
+<p>Copy the public IP of the EC2 instance</p>
+<p>Open a browser and enter public-ip:5000</p>
+<img src=./assets/images/82.png alt="Step 3 Image" class=step-image>
+<li></li>
+</ol>
+</section>
+<section id=step4>
+<h2>Configure End-To-End CodePipeline </h2>
+<p>Go to the CodePipeline console and Click on "Edit"</p>
+<img src=./assets/images/83.png alt="Step 4 Image" class=step-image>
+<p>Add a new stage</p>
+<img src=./assets/images/84.png alt="Step 4 Image" class=step-image>
+<p>Give a stage name</p>
+<img src=./assets/images/85.png alt="Step 4 Image" class=step-image>
+<p>Edit the action group</p>
+<img src=./assets/images/86.png alt="Step 4 Image" class=step-image>
+<p>add an action using AWS CodeDeploy as the action provider</p>
+<p>Select the deployment name and deployment group</p>
+<img src=./assets/images/87.png alt="Step 4 Image" class=step-image>
+<p>Save the changes</p>
+<img src=./assets/images/88.png alt="Step 4 Image" class=step-image>
+<p>Click on release changes</p>
+<img src=./assets/images/89.png alt="Step 4 Image" class=step-image>
+<p>Wait for the pipeline execution to complete</p>
+<img src=./assets/images/90.png alt="Step 4 Image" class=step-image>
+<p>Check the deployed application through the browser or EC2</p>
+<img src=./assets/images/91.png alt="Step 4 Image" class=step-image>
+<p>Check the deployed application through terminal using</p>
+<pre>sudo docker ps</pre>
+<pre>sudo docker images</pre>
+</section>
+<section id=congratulations-section>
+<h2>Congratulations! CI/CD Pipeline Configured Successfully!</h2>
+<p>Your Python application is now set up with a fully functional CI/CD pipeline on AWS.</p>
+</section>
+</main>
+<footer>
+<p style=text-align:center>&copy; 2024 CI/CD Mastery Blog by <strong>GadagojuShiva.</strong></p>
+</footer>
+<script src=./assets/js/script.js></script>
+</body>
+</html>
