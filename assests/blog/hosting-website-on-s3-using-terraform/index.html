@@ -1,162 +1,184 @@
 <!doctype html>
 <html lang=en>
+
 <head>
-<meta charset=UTF-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<title>Hosting a Static Website on AWS S3 using Terraform</title>
-<link rel="shortcut icon" href=../../images/main-profile.png type=image/x-icon>
-<link rel=stylesheet href=styles.css>
+    <meta charset=UTF-8>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hosting a Static Website on AWS S3 using Terraform</title>
+    <link rel="shortcut icon" href=../../images/main-profile.png type=image/x-icon>
+    <link rel=stylesheet href=styles.css>
 </head>
+
 <body>
-<header>
-<div class=container>
-<h1>Hosting a Static Website on AWS S3 using Terraform</h1>
-</div>
-</header>
-<section id=description class=info-section>
-<div class=container>
-<p>In this comprehensive guide, we'll take you through the process of hosting a static website on Amazon S3 using Terraform. Follow these step-by-step instructions, assuming you have Terraform installed on your Windows machine and an active AWS account.</p>
-</div>
-</section>
-<section id=prerequisites class=info-section>
-<div class=container>
-<h2>Prerequisites:</h2>
-<p>Before diving into the setup, ensure you have the following prerequisites:</p>
-<ul>
-<li>Terraform installed on Windows: <a href=https://learn.hashicorp.com/tutorials/terraform/install-cli target=_blank>Install Terraform</a></li>
-<li>AWS account: <a href=https://aws.amazon.com/ target=_blank>Create AWS Account</a></li>
-</ul>
-</div>
-</section>
-<section id=table-of-contents class=info-section>
-<div class=container>
-<h2>Table of Contents</h2>
-<ul>
-<li><a href=#step-1>Step 1: Create an S3 Bucket</a></li>
-<li><a href=#step-2>Step 2: Set Ownership Controls</a></li>
-<li><a href=#step-3>Step 3: Make the Bucket Public</a></li>
-<li><a href=#step-4>Step 4: Configure Bucket ACL</a></li>
-<li><a href=#step-5>Step 5: Upload Website Files</a></li>
-<li><a href=#step-6>Step 6: Configure Website Hosting</a></li>
-<li><a href=#deploy>Deploy the Infrastructure</a></li>
-<li><a href=#file-downloads>Download Terraform Configuration Files</a></li>
-<li><a href=#deployment-results>Check out snapshots of your deployed website</a></li>
-</ul>
-</div>
-</section>
-<section id=step-1 class=info-section>
-<div class=container>
-<h2>Step 1: Create an S3 Bucket</h2>
-<p>The first step involves creating an S3 bucket using Terraform. S3 buckets are versatile storage containers in AWS, and they will serve as the foundation for hosting your static website files. In the
-<strong>main.tf</strong> file, you define an AWS S3 bucket using Terraform's
-<strong>aws_s3_bucket</strong>
-resource block. This sets up the core storage for your website.
-</p>
-<section id=s3-bucket-creation class=code-section>
-<img src=./images/s3-bucket-creation.png alt="s3-bucket-creation.png Image" class=responsive-image>
-</section>
-</div>
-</section>
-<section id=step-2 class=info-section>
-<div class=container>
-<h2>Step 2: Set Ownership Controls:</h2>
-<p>In this step, you extend the <strong>main.tf</strong> file to include ownership controls for the S3 bucket. Ownership controls ensure that objects within the bucket are associated with the preferred owner. This is achieved by using the <strong>aws_s3_bucket_ownership_controls</strong> resource block.
-</p>
-<section id=Configure-ownership-controls class=code-section>
-<img src=./images/Configure-ownership-controls.png alt="Configure-ownership-controls.png Image" class=responsive-image>
-</section>
-</div>
-</section>
-<section id=step-3 class=info-section>
-<div class=container>
-<h2>Step 3: Make the Bucket Public:</h2>
-<p>Continuing in the <strong>main.tf</strong> file, this step focuses on configuring public access to the S3 bucket. By using the <strong>aws_s3_bucket_public_access_block</strong> resource block, you control various aspects of public access, such as blocking public ACLs and policies.
-</p>
-<section id=configure-public-access class=code-section>
-<img src=./images/configure-public-access.png alt="configure-public-access.png Image" class=responsive-image>
-</section>
-</div>
-</section>
-<section id=step-4 class=info-section>
-<div class=container>
-<h2>Step 4: Configure Bucket ACL:</h2>
-<p>This step involves setting up Access Control Lists (ACL) for the S3 bucket. The
-<strong>aws_s3_bucket_acl</strong> resource block in the <strong>main.tf</strong> file allows you to define the ACL for the bucket, ensuring it is set to "public-read."
-</p>
-<section id=acl class=code-section>
-<img src=./images/acl.png alt="acl.png Image" class=responsive-image>
-</section>
-</div>
-</section>
-<section id=step-5 class=info-section>
-<div class=container>
-<h2>Step 5: Upload Website Files</h2>
-<p>Extending the <strong>main.tf</strong> file, you configure Terraform to upload your website files to the S3 bucket. Using <strong>aws_s3_object</strong>resource blocks, you specify the key, source path, ACL, and content type for each file (e.g., index.html, error.html).
-</p>
-<section id=objectresouce class=code-section>
-<img src=./images/objectresouce.png alt="objectresouce.png Image" class=responsive-image>
-</section>
-</div>
-</section>
-<section id=step-6 class=info-section>
-<div class=container>
-<h2>Step 6: Configure Website Hosting:</h2>
-<p>The final step in the <strong>main.tf</strong> file involves configuring website hosting for the S3 bucket. By using the <strong>aws_s3_bucket_website_configuration</strong> resource block, you define the index document (e.g., index.html) and error document (e.g., error.html), making your S3 bucket suitable for hosting a static website.
-</p>
-<section id=config class=code-section>
-<img src=./images/config.png alt="config.png Image" class=responsive-image>
-</section>
-</div>
-</section>
-<section id=deploy class=info-section>
-<div class=container>
-<h2>Deploy the Infrastructure</h2>
-<p>Execute the commands:</p>
-<img src=./images/commands.png alt="commands.tf image" class=responsive-image>
-</div>
-</section>
-<section id=file-downloads class=info-section>
-<div class=container>
-<h2>View Terraform Configuration Files</h2>
-<p>Click the links below to view the Terraform configuration files:</p>
-<ul>
-<li>
-<a href=./files/main.tf target=_blank><button>View main.tf</button></a>
-</li>
-<li>
-<a href=./files/variables.tf target=_blank><button>View variables.tf</button></a>
-</li>
-<li>
-<a href=./files/provider.tf target=_blank><button>View provider.tf</button></a>
-</li>
-<li>
-<a href=https://github.com/GadagojuShiva/terraform_examples/tree/main/example-4 target=_blank><button>GitHub-Repo</button></a>
-</li>
-</ul>
-</div>
-</section>
-<section id=deployment-results class=info-section>
-<div class=container>
-<h2>Deployment Results</h2>
-<p>Check out snapshots of your deployed website:</p>
-<div class=deployment-images>
-<p><strong>Snapshot of the vs code after executing `terraform apply -auto-approve`</strong></p>
-<img src=./images/vs.png alt="Snapshot 1" class=deployed-image>
-<img src=./images/s3-console.png alt="Snapshot 2" class=deployed-image>
-<img src=./images/files-uploaded.png alt="Snapshot 3" class=deployed-image>
-<img src=./images/enabled-hosting.png alt="Snapshot 4" class=deployed-image>
-<img src=./images/public-.png alt="Snapshot 5" class=deployed-image>
-<p><strong>index.html is the main entry point for a static website, serving as the default page displayed when visitors access the site.</strong></p>
-<img src=./images/wesbite.png alt="Snapshot 6" class=deployed-image>
-<p><strong>The error.html file is typically used to define a custom error page that is displayed when there is an issue accessing a resource on the website.</strong></p>
-<img src=./images/eroore.png alt="Snapshot 7" class=deployed-image>
-</div>
-</div>
-</section>
-<footer>
-<div class=container>
-<p>Blog By <strong>@GadagojuShiva</strong></p>
-</div>
-</footer>
+    <header>
+        <div class=container>
+            <h1>Hosting a Static Website on AWS S3 using Terraform</h1>
+        </div>
+    </header>
+    <section id=description class=info-section>
+        <div class=container>
+            <p>In this comprehensive guide, we'll take you through the process of hosting a static website on Amazon S3
+                using Terraform. Follow these step-by-step instructions, assuming you have Terraform installed on your
+                Windows machine and an active AWS account.</p>
+        </div>
+    </section>
+    <section id=prerequisites class=info-section>
+        <div class=container>
+            <h2>Prerequisites:</h2>
+            <p>Before diving into the setup, ensure you have the following prerequisites:</p>
+            <ul>
+                <li>Terraform installed on Windows: <a href=https://learn.hashicorp.com/tutorials/terraform/install-cli
+                        target=_blank>Install Terraform</a></li>
+                <li>AWS account: <a href=https://aws.amazon.com/ target=_blank>Create AWS Account</a></li>
+            </ul>
+        </div>
+    </section>
+    <section id=table-of-contents class=info-section>
+        <div class=container>
+            <h2>Table of Contents</h2>
+            <ul>
+                <li><a href=#step-1>Step 1: Create an S3 Bucket</a></li>
+                <li><a href=#step-2>Step 2: Set Ownership Controls</a></li>
+                <li><a href=#step-3>Step 3: Make the Bucket Public</a></li>
+                <li><a href=#step-4>Step 4: Configure Bucket ACL</a></li>
+                <li><a href=#step-5>Step 5: Upload Website Files</a></li>
+                <li><a href=#step-6>Step 6: Configure Website Hosting</a></li>
+                <li><a href=#deploy>Deploy the Infrastructure</a></li>
+                <li><a href=#file-downloads>Download Terraform Configuration Files</a></li>
+                <li><a href=#deployment-results>Check out snapshots of your deployed website</a></li>
+            </ul>
+        </div>
+    </section>
+    <section id=step-1 class=info-section>
+        <div class=container>
+            <h2>Step 1: Create an S3 Bucket</h2>
+            <p>The first step involves creating an S3 bucket using Terraform. S3 buckets are versatile storage
+                containers in AWS, and they will serve as the foundation for hosting your static website files. In the
+                <strong>main.tf</strong> file, you define an AWS S3 bucket using Terraform's
+                <strong>aws_s3_bucket</strong>
+                resource block. This sets up the core storage for your website.
+            </p>
+            <section id=s3-bucket-creation class=code-section>
+                <img src=./images/s3-bucket-creation.png alt="s3-bucket-creation.png Image" class=responsive-image>
+            </section>
+        </div>
+    </section>
+    <section id=step-2 class=info-section>
+        <div class=container>
+            <h2>Step 2: Set Ownership Controls:</h2>
+            <p>In this step, you extend the <strong>main.tf</strong> file to include ownership controls for the S3
+                bucket. Ownership controls ensure that objects within the bucket are associated with the preferred
+                owner. This is achieved by using the <strong>aws_s3_bucket_ownership_controls</strong> resource block.
+            </p>
+            <section id=Configure-ownership-controls class=code-section>
+                <img src=./images/Configure-ownership-controls.png alt="Configure-ownership-controls.png Image"
+                    class=responsive-image>
+            </section>
+        </div>
+    </section>
+    <section id=step-3 class=info-section>
+        <div class=container>
+            <h2>Step 3: Make the Bucket Public:</h2>
+            <p>Continuing in the <strong>main.tf</strong> file, this step focuses on configuring public access to the S3
+                bucket. By using the <strong>aws_s3_bucket_public_access_block</strong> resource block, you control
+                various aspects of public access, such as blocking public ACLs and policies.
+            </p>
+            <section id=configure-public-access class=code-section>
+                <img src=./images/configure-public-access.png alt="configure-public-access.png Image"
+                    class=responsive-image>
+            </section>
+        </div>
+    </section>
+    <section id=step-4 class=info-section>
+        <div class=container>
+            <h2>Step 4: Configure Bucket ACL:</h2>
+            <p>This step involves setting up Access Control Lists (ACL) for the S3 bucket. The
+                <strong>aws_s3_bucket_acl</strong> resource block in the <strong>main.tf</strong> file allows you to
+                define the ACL for the bucket, ensuring it is set to "public-read."
+            </p>
+            <section id=acl class=code-section>
+                <img src=./images/acl.png alt="acl.png Image" class=responsive-image>
+            </section>
+        </div>
+    </section>
+    <section id=step-5 class=info-section>
+        <div class=container>
+            <h2>Step 5: Upload Website Files</h2>
+            <p>Extending the <strong>main.tf</strong> file, you configure Terraform to upload your website files to the
+                S3 bucket. Using <strong>aws_s3_object</strong>resource blocks, you specify the key, source path, ACL,
+                and content type for each file (e.g., index.html, error.html).
+            </p>
+            <section id=objectresouce class=code-section>
+                <img src=./images/objectresouce.png alt="objectresouce.png Image" class=responsive-image>
+            </section>
+        </div>
+    </section>
+    <section id=step-6 class=info-section>
+        <div class=container>
+            <h2>Step 6: Configure Website Hosting:</h2>
+            <p>The final step in the <strong>main.tf</strong> file involves configuring website hosting for the S3
+                bucket. By using the <strong>aws_s3_bucket_website_configuration</strong> resource block, you define the
+                index document (e.g., index.html) and error document (e.g., error.html), making your S3 bucket suitable
+                for hosting a static website.
+            </p>
+            <section id=config class=code-section>
+                <img src=./images/config.png alt="config.png Image" class=responsive-image>
+            </section>
+        </div>
+    </section>
+    <section id=deploy class=info-section>
+        <div class=container>
+            <h2>Deploy the Infrastructure</h2>
+            <p>Execute the commands:</p>
+            <img src=./images/commands.png alt="commands.tf image" class=responsive-image>
+        </div>
+    </section>
+    <section id=file-downloads class=info-section>
+        <div class=container>
+            <h2>View Terraform Configuration Files</h2>
+            <p>Click the links below to view the Terraform configuration files:</p>
+            <ul>
+                <li>
+                    <a href=./files/main.tf target=_blank><button>View main.tf</button></a>
+                </li>
+                <li>
+                    <a href=./files/variables.tf target=_blank><button>View variables.tf</button></a>
+                </li>
+                <li>
+                    <a href=./files/provider.tf target=_blank><button>View provider.tf</button></a>
+                </li>
+                <li>
+                    <a href=https://github.com/GadagojuShiva/terraform_examples/tree/main/example-4
+                        target=_blank><button>GitHub-Repo</button></a>
+                </li>
+            </ul>
+        </div>
+    </section>
+    <section id=deployment-results class=info-section>
+        <div class=container>
+            <h2>Deployment Results</h2>
+            <p>Check out snapshots of your deployed website:</p>
+            <div class=deployment-images>
+                <p><strong>Snapshot of the vs code after executing `terraform apply -auto-approve`</strong></p>
+                <img src=./images/vs.png alt="Snapshot 1" class=deployed-image>
+                <img src=./images/s3-console.png alt="Snapshot 2" class=deployed-image>
+                <img src=./images/files-uploaded.png alt="Snapshot 3" class=deployed-image>
+                <img src=./images/enabled-hosting.png alt="Snapshot 4" class=deployed-image>
+                <img src=./images/public-.png alt="Snapshot 5" class=deployed-image>
+                <p><strong>index.html is the main entry point for a static website, serving as the default page
+                        displayed when visitors access the site.</strong></p>
+                <img src=./images/wesbite.png alt="Snapshot 6" class=deployed-image>
+                <p><strong>The error.html file is typically used to define a custom error page that is displayed when
+                        there is an issue accessing a resource on the website.</strong></p>
+                <img src=./images/eroore.png alt="Snapshot 7" class=deployed-image>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div class=container>
+            <p>Blog By <strong>@GadagojuShiva</strong></p>
+        </div>
+    </footer>
 </body>
+
 </html>
