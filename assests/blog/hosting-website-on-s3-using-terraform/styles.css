@@ -181,4 +181,21 @@ footer {
         width: 100%;
         /* Make buttons, header, and footer take full width */
     }
+    #file-downloads ul {
+        flex-direction: column; /* Stack buttons vertically on small screens */
+        align-items: stretch; /* Stretch buttons to full width */
+    }
+
+    #file-downloads li {
+        margin-bottom: 10px; /* Add margin between buttons */
+    }
+
+    #file-downloads button {
+        width: 100%; /* Make buttons take full width */
+        box-sizing: border-box; /* Include padding and border in the width calculation */
+    }
+
+    #file-downloads button:hover {
+        background-color: #0056b3; /* Adjust hover background color */
+    }
 }
