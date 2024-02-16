@@ -125,14 +125,27 @@ footer {
 }
 @media only screen and (max-width: 600px) {
     body {
-        font-size: 14px;
-        /* Decrease font size for smaller screens */
+        font-size: 14px; /* Decrease font size for smaller screens */
     }
 
     .container {
-        width: 95%;
-        /* Further adjust container width for smaller screens */
+        width: 90%; /* Further adjust container width for smaller screens */
+        margin: 0 auto;
+    }
+
+    header {
+        padding: 10px 0; /* Decrease header padding for smaller screens */
+    }
+
+    footer {
+        padding: 10px 0; /* Decrease footer padding for smaller screens */
     }
 
     /* Additional mobile-specific styles if needed */
+
+    #file-downloads button,
+    footer,
+    header {
+        width: 100%; /* Make buttons, header, and footer take full width */
+    }
 }
